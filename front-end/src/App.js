@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Loginpage from './Loginpage';
 import Dashboard from './Dashboard';
 import Stock from './Stock.js'
-/*import Maintenance from '../Maintenance.js'*/
+import Maintenance from './Maintenance.js'
 import Information  from './Information.js'
 import Report from './Report.js'
 import News from './News.js'
@@ -22,7 +22,7 @@ function App() {
         <Route path='/' element={<Loginpage/>}></Route>
         <Route path='/dashboard' element={<Dashboard/>}></Route>
         <Route path='/stock' element={<Stock/>}></Route>
-        {/*<Route path='/maintenance' element={<Maintenance/>}></Route>*/}
+        <Route path='/maintenance' element={<Maintenance/>}></Route>
         <Route path='/information' element={<Information/>}></Route>
         <Route path='/report' element={<Report/>}></Route>
         <Route path='/news' element={<News/>}></Route>
