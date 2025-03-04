@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Menu, User, Settings } from "lucide-react";
-import Logo from "./assets/Sathyaa.png";
+import Logo from './Bama.png';
+//import Logo from "./assets/Sathyaa.png";
 import DefaultProfileIcon from "./assets/profile.jpg";
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  let navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -18,9 +21,47 @@ const Profile = () => {
     }
   };
 
+  const handleStock =()=>{
+    navigate('/stock')
+  }
+  const handleReport=()=>{
+    navigate('/report')
+  }
+
+  const handleMain=()=>{
+    navigate('/maintenance')
+  }
+
+  const handleHome=()=>{
+    navigate('/dashboard-admin')
+  }
+
+  const handleProfile=()=>{
+    navigate('/profile')
+  }
+
+  const handleInfo=()=>{
+    navigate('/information')
+  }
+
   return (
     <div className="app-container">
-      {/* Navbar */}
+      <header className="header">
+        <div className="logo-wrapper">
+          <img src={Logo} alt="logo" className="logo-image" />
+        </div>
+        <nav className="nav">
+          <ul type="none" className='nav-list'>
+            <button className='nav-button' onClick={handleHome}>Home</button>
+            <button className='nav-button' onClick={handleStock}>Stock</button>
+            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            <button className='nav-button' onClick={handleReport}>Report</button>
+            <button className='nav-button' onClick={handleInfo}>Notification</button>
+            <button className='nav-button' onClick={handleProfile}>Profile</button>
+          </ul>
+        </nav>
+      </header>
+      {/* Navbar 
       <header className="header">
         <div className="left-section">
           <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
@@ -60,7 +101,7 @@ const Profile = () => {
             <button className="popup-item">🚪 Logout</button>
           </div>
         )}
-      </header>
+      </header>*/}
 
       {/* Profile Info Section */}
       <div className="profile-container">

@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa"; 
 import Logo from "./assets/Sathyaa.png"; // Ensure correct path to the logo
-import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react";
+import { Folder, Upload, Share, Download, Trash, Menu, User, History } from "lucide-react";
 import "./Cs.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Cs = () => {
+  let navigate=useNavigate()
+  //const { position, name, dept } = useSelector ((state) => state.user);
+  const [dept,setDept] = useState('CSE')
+  console.log(dept)
+  /*console.log(position)
+  console.log(name)*/
+
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("data");
     return savedData
@@ -27,7 +36,31 @@ const Cs = () => {
 
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(data));
+    
   }, [data]);
+
+  /*useEffect(() => {
+    // Function to handle state push when the page is loaded
+    const handleBackButton = (event) => {
+      // When the popstate event is triggered, check where you want to navigate
+      // and use navigate() to go to a specific route.
+      if (event.state && event.state.navigateTo) {
+        navigate(event.state.navigateTo);
+      }
+    };
+    //const history = History
+    // Add an event listener to listen for the 'popstate' event (which happens when the back button is clicked)
+    window.addEventListener("popstate", handleBackButton);
+
+    // Push a state into history when the component mounts.
+    window.history.pushState({ navigateTo: "/stock" }, "", "/stock");
+
+    // Clean up the event listener when the component unmounts.
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [navigate]);*/
+
 
   useEffect(() => {
     if (!searchTerm) {
@@ -138,9 +171,9 @@ const Cs = () => {
 
         <main className="content">
           <h2>Computer and Science</h2>
-          <button className="add-button" onClick={() => setIsModalOpen(true)}>
+          {dept=='CSE' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
             + ADD
-          </button>
+          </button>}
 
           {data.length === 0 ? (
             <div className="empty-message">No classes added yet.</div>

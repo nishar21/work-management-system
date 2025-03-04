@@ -3,8 +3,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis
 import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react";
 import "./Report.css";
 import Logo from "./Bama.png"; // Ensure you have a logo file in src
+import { useNavigate } from "react-router-dom";
 
 const Report = () => {
+  let navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -39,9 +41,47 @@ const Report = () => {
     { task: "Office Deep Cleaning", department: "Cleaning", priority: "Low", status: "Scheduled", assignee: "Tom Wilson", due: "2024-02-17" },
   ];
 
+  const handleStock =()=>{
+    navigate('/stock')
+  }
+  const handleReport=()=>{
+    navigate('/report')
+  }
+
+  const handleMain=()=>{
+    navigate('/maintenance')
+  }
+
+  const handleHome=()=>{
+    navigate('/dashboard-admin')
+  }
+
+  const handleProfile=()=>{
+    navigate('/profile')
+  }
+
+  const handleInfo=()=>{
+    navigate('/information')
+  }
+
   return (
     <div className="app-container">
-      {/* Navbar */}
+      <header className="header">
+        <div className="logo-wrapper">
+          <img src={Logo} alt="logo" className="logo-image" />
+        </div>
+        <nav className="nav">
+          <ul type="none" className='nav-list'>
+            <button className='nav-button' onClick={handleHome}>Home</button>
+            <button className='nav-button' onClick={handleStock}>Stock</button>
+            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            <button className='nav-button' onClick={handleReport}>Report</button>
+            <button className='nav-button' onClick={handleInfo}>Notification</button>
+            <button className='nav-button' onClick={handleProfile}>Profile</button>
+          </ul>
+        </nav>
+      </header>
+      {/* Navbar 
       <header className="header">
         <div className="left-section">
           <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
@@ -60,7 +100,7 @@ const Report = () => {
           <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
         </div>
 
-        {/* Popup Menus */}
+        {/* Popup Menus 
         {menuOpen && (
           <div className="menu-popup">
             <button className="popup-item">📊 Dashboard</button>
@@ -82,7 +122,7 @@ const Report = () => {
             <button className="popup-item">🚪 Logout</button>
           </div>
         )}
-      </header>
+      </header>*/}
       <div className="report">
         {/* Status Cards */}
         <div className="status-cards">

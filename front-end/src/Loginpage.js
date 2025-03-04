@@ -2,13 +2,22 @@ import { useState } from "react";
 import "./Login.css"; // Import CSS
 import bgImage from "./college-bg.jpg"; // Background image
 import collegeLogo from "./college-logo.png"; // Example path for college logo
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import login from './UserSlice'
+//import Dashboard from "./Dashboard";
 
-const Loginpage = () => {
+function Loginpage(props){
+  
   const [showPopup, setShowPopup] = useState(false);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [position, setPosition] = useState('');
+  const [name,setName] = useState('')
+  const [dept,setDept] = useState('') 
+  let dispatch = useDispatch()
+  //dispatch(login({ position, name, dept }));
 
-
+  let navigate = useNavigate()
   const handleNewUserClick = () => {
     setShowPopup(true);
     setShowPasswordReset(false); // Reset password reset view
@@ -22,10 +31,28 @@ const Loginpage = () => {
     setShowPopup(false);
   };
 
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    console.log(name)
+    console.log(dept)
+    console.log(position)
+    
+    if (position==='Admin'){
+      navigate('/dashboard-admin')
+    }
+    else if (position==='Management'){
+      navigate('/dashboard-management')
+    }
+    else if (position==='Super Admin'){
+      navigate('/dashboard-Super')
+    }
+    /*var f = document.getElementById('option1').value
+    console.log(f)*/
+  }
+
   return (
     <div className="main-container" style={{ backgroundImage: `url(${bgImage})` }}>
       <div className="overlay"></div>
-
       <div className="login-box">
         {/* College Banner */}
         <div className="college-banner">
@@ -43,25 +70,26 @@ const Loginpage = () => {
         <h2 className="form-title">Management System</h2>
 
         <div className="input-group">
-          <select className="input-field">
-            <option>Management</option>
-            <option>Super Admin</option>
-            <option>Admin</option>
-            <option>End User</option>
+          <select className="input-field" onChange={(e) => setPosition(e.target.value)} value={position}> {/**/}
+            <option className='option2' id="option5"  value="">select an option</option>
+            <option className='option2' id="option2"  value="Super Admin">Super Admin</option>
+            <option className='option1' id="option1"  value="Management" >Management</option>
+            <option className='option3' id="option3"  value="Admin">Admin</option>
+            <option className='option4' id="option4"  value="End User">End User</option>
           </select>
         </div>
 
         <div className="input-group">
           <label>Employee Number</label>
-          <input type="text" className="input-field" placeholder="Enter Register Number" />
+          <input type="text" className="input-field" placeholder="Enter Register Number" onChange={(e)=>{setName(e.target.value)}}/>
         </div>
 
         <div className="input-group">
           <label>Password</label>
-          <input type="password" className="input-field" placeholder="Enter Password" />
+          <input type="password" className="input-field" placeholder="Enter Password" onChange={(e)=>{setDept(e.target.value)}}/>
         </div>
 
-        <button className="login-btn"><Link to='/dashboard'>LOG IN</Link></button>
+        <button type='sumbit' className="login-btn" onClick={handleSubmit}>LOG IN</button> 
 
         {/* Links Section */}
         <div className="links">
