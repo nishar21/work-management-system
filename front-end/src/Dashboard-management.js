@@ -45,6 +45,11 @@ const DashboardM = (props) => {
     const handleInfo=()=>{
       navigate('/information')
     }
+    
+    const ticket=()=>{
+      navigate('/ticket')
+    }
+
 
   return (
     <div className="app-container">
@@ -103,7 +108,7 @@ const DashboardM = (props) => {
 
           <section className="ticket-section">
             <h2 className="section-title">Ticket Raising</h2>
-            <form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
+            {/*<form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
               <div className="form-group">
                 <label>Name</label>
                 <input type="text" placeholder="Enter your name" />
@@ -122,7 +127,8 @@ const DashboardM = (props) => {
                 <textarea placeholder="Describe your issue"></textarea>
               </div>
               <button type="submit">Submit</button>
-            </form>
+            </form>*/}
+            <button className='raise' onClick={ticket}>Raise a Ticket</button>
           </section>
         </div>
       </main>

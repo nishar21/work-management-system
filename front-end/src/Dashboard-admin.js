@@ -4,6 +4,8 @@ import Logo from './Bama.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Loginpage from './Loginpage';
+import { useSelector } from 'react-redux';
+import { GiHamburgerMenu } from "react-icons/gi";
 const DashboardA = (props) => {
   //console.log(user)
   // Card data
@@ -42,12 +44,26 @@ const DashboardA = (props) => {
     }
   
     const handleInfo=()=>{
-      navigate('/information')
+      navigate('/news')
+    }
+
+    const ticket=()=>{
+      navigate('/ticket')
     }
 
   return (
     <div className="app-container">
       <header className="header">
+        <div className='menu'>
+        {/*<GiHamburgerMenu className='menu-icon'/>
+        <div>
+          <select>
+            <option>Dashboard</option>
+            <option>Ticket</option>
+            <option>Calendar</option>
+          </select>
+        </div>*/}
+        </div>
         <div className="logo-wrapper">
           <img src={Logo} alt="logo" className="logo-image" />
         </div>
@@ -101,7 +117,7 @@ const DashboardA = (props) => {
 
           <section className="ticket-section">
             <h2 className="section-title">Ticket Raising</h2>
-            <form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
+            {/*<form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
               <div className="form-group">
                 <label>Name</label>
                 <input type="text" placeholder="Enter your name" />
@@ -120,7 +136,8 @@ const DashboardA = (props) => {
                 <textarea placeholder="Describe your issue"></textarea>
               </div>
               <button type="submit">Submit</button>
-            </form>
+            </form>*/}
+            <button className='raise' onClick={ticket}>Raise a Ticket</button>
           </section>
         </div>
       </main>

@@ -17,8 +17,11 @@ import DashboardA from './Dashboard-admin.js';
 import Loginpage from './Loginpage.js';
 import Main_admin from './Main-admin.js';
 import DashboardM from './Dashboard-management.js';
+import EndUser from './EndUser.js'
 import { Provider } from "react-redux";
-import store from './Store.js';
+import store from './Redux/Store.js'
+import Container from './Redux/Container.js';
+import Ticket from './Ticket.js';
 
 
 function App() {
@@ -33,6 +36,7 @@ function App() {
             <Route path='/dashboard-admin' element={<DashboardA/>}></Route>
             <Route path='/dashboard-super' element={<DashboardA/>}></Route>
             <Route path='/dashboard-management' element={<DashboardM/>}></Route>
+            <Route path='/enduser' element={<EndUser/>}></Route>
             <Route path='/stock' element={<Stock/>}></Route>
             <Route path='/maintenance' element={<Maintenance/>}></Route>
             <Route path='/information' element={<Information/>}></Route>
@@ -45,6 +49,9 @@ function App() {
             <Route path='/transport' element={<Transport/>}></Route>
             <Route path='/profile' element={<Profile/>}></Route>
             <Route path='/main-admin/cs' element={<Cs/>}></Route>
+            <Route path='/container' element={<Container/>}></Route>
+            <Route path='/ticket' element={<Ticket/>}></Route>
+
             
           </Routes>
         </BrowserRouter>

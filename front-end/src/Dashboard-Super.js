@@ -42,6 +42,11 @@ const DashboardS = (props) => {
     navigate('/information')
   }
 
+  const ticket=()=>{
+    navigate('/ticket')
+  }
+
+
   /*function getData(users){
     setUser(users)
     console.log(users)
@@ -104,7 +109,7 @@ const DashboardS = (props) => {
 
           <section className="ticket-section">
             <h2 className="section-title">Ticket Raising</h2>
-            <form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
+            {/*<form className="ticket-form" onSubmit={(e) => { e.preventDefault(); }}>
               <div className="form-group">
                 <label>Name</label>
                 <input type="text" placeholder="Enter your name" />
@@ -123,7 +128,8 @@ const DashboardS = (props) => {
                 <textarea placeholder="Describe your issue"></textarea>
               </div>
               <button type="submit">Submit</button>
-            </form>
+            </form>*/}
+            <button className='raise' onClick={ticket}>Raise a Ticket</button>
           </section>
         </div>
       </main>

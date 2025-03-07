@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 const Cs = () => {
   let navigate=useNavigate()
   //const { position, name, dept } = useSelector ((state) => state.user);
-  const [dept,setDept] = useState('CSE')
-  console.log(dept)
+  const selector = useSelector(state => state)
+  console.log(selector.userDetails)
   /*console.log(position)
   console.log(name)*/
 
@@ -171,7 +171,7 @@ const Cs = () => {
 
         <main className="content">
           <h2>Computer and Science</h2>
-          {dept=='CSE' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
+          {selector.userDetails.dept=='CSE' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
             + ADD
           </button>}
 

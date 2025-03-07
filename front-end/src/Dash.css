@@ -60,6 +60,11 @@
   justify-content:space-between;
 }
 
+.menu-icon{
+  height: 5vh;
+  margin-right: 2vh;
+}
+
 .nav-button{
   width: 15.5vh;
   height: 100%;
@@ -264,6 +269,17 @@
   color: #777;
 }
 
+.raise{
+  width: 60vh;
+  height: 5vh;
+  font-size: 3vh;
+  align-items: center;
+  margin-top: 20vh;
+  background-color: #831238;
+  color: white;
+  border: none;
+}
+
 .priority-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 16px;
@@ -293,6 +309,8 @@
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
 }
 
 .ticket-form .form-group {

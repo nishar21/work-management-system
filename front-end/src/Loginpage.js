@@ -5,6 +5,7 @@ import collegeLogo from "./college-logo.png"; // Example path for college logo
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import login from './UserSlice'
+import { User, User_position, User_varia } from "./Redux/Action";
 //import Dashboard from "./Dashboard";
 
 function Loginpage(props){
@@ -33,7 +34,8 @@ function Loginpage(props){
 
   const handleSubmit = (e)=>{
     e.preventDefault();
-    console.log(name)
+    dispatch(User({name:name,dept:dept,position:position}))
+    console.log({name:name})
     console.log(dept)
     console.log(position)
     
@@ -45,6 +47,9 @@ function Loginpage(props){
     }
     else if (position==='Super Admin'){
       navigate('/dashboard-Super')
+    }
+    else if (position==='End User'){
+      navigate('/enduser')
     }
     /*var f = document.getElementById('option1').value
     console.log(f)*/
@@ -71,7 +76,6 @@ function Loginpage(props){
 
         <div className="input-group">
           <select className="input-field" onChange={(e) => setPosition(e.target.value)} value={position}> {/**/}
-            <option className='option2' id="option5"  value="">select an option</option>
             <option className='option2' id="option2"  value="Super Admin">Super Admin</option>
             <option className='option1' id="option1"  value="Management" >Management</option>
             <option className='option3' id="option3"  value="Admin">Admin</option>
