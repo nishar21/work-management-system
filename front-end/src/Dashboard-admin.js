@@ -10,7 +10,7 @@ const DashboardA = (props) => {
   //console.log(user)
   // Card data
   let navigate = useNavigate()
-  const [dept,setDept] = useState('CSE')
+  const selector = useSelector(state=>state)
   const cardData = [
     { label: "Department", count: "1500+" },
     { label: "Rooms", count: "1500+" },
@@ -71,7 +71,7 @@ const DashboardA = (props) => {
           <ul type="none" className='nav-list'>
             <button className='nav-button' onClick={handleHome}>Home</button>
             <button className='nav-button' onClick={handleStock}>Stock</button>
-            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
             <button className='nav-button' onClick={handleReport}>Report</button>
             <button className='nav-button' onClick={handleInfo}>Notification</button>
             <button className='nav-button' onClick={handleProfile}>Profile</button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Folder, Menu, User } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import "./Information.css"; // Import the CSS file
+import "./eee.css"; // Import the CSS file
 import Logo from "./Bama.png"; // Ensure the logo path is correct
 
 const recentActivities = [
@@ -108,7 +108,7 @@ const Information = () => {
 
       {/* Main Dashboard */}
       <div className="dashboard-container">
-        <h1 className="dashboard-title">INFORMATION TECHNOLOGY</h1>
+        <h1 className="dashboard-title">ELECTRICAL AND ELECTROICS</h1>
 
         <div className="dashboard-content">
           {/* Left Section - Folders */}

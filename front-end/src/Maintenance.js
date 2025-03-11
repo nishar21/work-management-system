@@ -37,9 +37,23 @@ const Maintenance = () => {
   const [position,setPosition] = useState('maintenance')
   let navigate = useNavigate()
   const handleCard=(name)=>{
-    console.log(name)
-    if (name=='Water Service'){
+    if (name=='IT Support'){
+      navigate('/information')
+    }
+    else if (name=='Water Services'){
       navigate('/waterService')
+    }
+    else if(name=='Power & Electrical'){
+      navigate('/powerElectrical')
+    }
+    else if(name=='AC Maintenance'){
+      navigate('/ac')
+    }
+    else if(name=='Cleaning Services'){
+      navigate('/cleaningService')
+    }
+    else if(name=='Transport'){
+      navigate('/transport')
     }
   }
 
@@ -143,7 +157,7 @@ const Maintenance = () => {
 
         <div className="departments-grid">
           {departments.map((dept, index) => (
-            <div className="department-card" key={index}>
+            <div className="department-card" key={index} onClick={()=>{handleCard(dept.name)}}>
               <div className="icon" >{dept.icon}</div>
               <h4>{dept.name}</h4>
               <p>{dept.description}</p>

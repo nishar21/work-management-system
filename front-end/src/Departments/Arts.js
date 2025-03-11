@@ -6,11 +6,11 @@ import "./Cs.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Cs = () => {
+const Arts = () => {
   let navigate=useNavigate()
   //const { position, name, dept } = useSelector ((state) => state.user);
   const selector = useSelector(state => state)
-  console.log(selector.userDetails)
+  console.log(selector.userDetails.dept)
   /*console.log(position)
   console.log(name)*/
 
@@ -171,7 +171,7 @@ const Cs = () => {
 
         <main className="content">
           <h2>Computer and Science</h2>
-          {selector.userDetails.dept=='CSE' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
+          {selector.userDetails.dept=='ARTS' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
             + ADD
           </button>}
 
@@ -261,4 +261,4 @@ const Cs = () => {
   );
 };
 
-export default Cs;
+export default Arts;

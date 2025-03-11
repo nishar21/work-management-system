@@ -12,10 +12,11 @@ import lawImage from "./law.jpeg";
 import eceImage from "./ece.jpg";
 import eeeImage from "./eee.jpg";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const initialSchools = [
-  { id:'cse', name: "SCHOOL OF COMPUTING", image: computingImage },
-  { id:'ece',name: "SCHOOL OF MECH", image: mechImage },
+  { name: "SCHOOL OF COMPUTING", image: computingImage },
+  { name: "SCHOOL OF MECH", image: mechImage },
   { name: "SCHOOL OF CIVIL", image: civilImage },
   { name: "SCHOOL OF ARTS", image: artsImage },
   { name: "SCHOOL OF LAW", image: lawImage },
@@ -33,7 +34,7 @@ const Stock = () => {
   const [newDeptName, setNewDeptName] = useState("");
   const [newDeptImage, setNewDeptImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const [position,setPosition] = useState('Super-admin')
+  const selector = useSelector(state=>state)
   let navigate = useNavigate()
 
   const filteredSchools = schools.filter((school) =>
@@ -69,12 +70,27 @@ const Stock = () => {
     setPreviewImage(null);
   };
 
-  const handleCard=(id)=>{
-    if (id==='cse'){
-      navigate('/main-admin/cs')
+  const handleCard=(name)=>{
+    if (name=='SCHOOL OF COMPUTING'){
+      navigate('/cs')
     }
-    else if(id==='ece'){
-      navigate('/information')
+    else if(name=='SCHOOL OF MECH'){
+      navigate('/mech')
+    }
+    else if(name=='SCHOOL OF CIVIL'){
+      navigate('/civil')
+    }
+    else if(name=='SCHOOL OF ARTS'){
+      navigate('/arts')
+    }
+    else if(name=='SCHOOL OF LAW'){
+      navigate('/law')
+    }
+    else if(name=='SCHOOL OF ECE'){
+      navigate('/ece')
+    }
+    else if(name=='SCHOOL OF EEE'){
+      navigate('/eee')
     }
     
   }
@@ -172,14 +188,14 @@ const Stock = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {position=='Super-admin' && <button className="add-button" onClick={() => setShowAddPopup(true)}>ADD+</button>}
+        {selector.userDetails.position=='Super Admin' && <button className="add-button" onClick={() => setShowAddPopup(true)}>ADD+</button>}
       </div>
 
       {/* Departments Grid */}
       <div className="grid">
         {filteredSchools.length > 0 ? (
           filteredSchools.map((school, index) => (
-            <div className="card" key={index} onClick={() => handleCard(school.id)}>
+            <div className="card" key={index} onClick={() => handleCard(school.name)}>
               <div
                 className="card-image"
                 style={{ backgroundImage: `url(${school.image})` }}

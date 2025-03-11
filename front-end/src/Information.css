@@ -164,7 +164,51 @@ body {
   border-radius: 0px;
   animation: slideDown 0.3s ease-in-out;
 }
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.popup-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.popup-content button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-content button:first-of-type {
+  background: #dc3545;
+  color: white;
+}
+
+.popup-content button:last-of-type {
+  background: #ccc;
+  color: black;
+}
 /* Animation for smooth dropdown effect */
 @keyframes slideDown {
   from {
@@ -322,9 +366,67 @@ body {
   gap: 10px;
 }
 
-/* Recent Activity - Smaller Size */
-.recent-activity {
+/* ======= Footer Styles ======= */
+.footer {
+  background-color: #831238;
+  color: white;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 left;
+  padding: 0 20px;
+}
+
+.footer h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.footer-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-activity-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.footer-activity-name {
   font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.footer-activity-time {
+  font-size: 12px;
+  color: #ddd;
+}
+
+/* Responsive Design for Footer */
+@media screen and (max-width: 768px) {
+  .footer-content {
+    padding: 0 10px;
+  }
+
+  .footer h2 {
+    font-size: 18px;
+  }
+
+  .footer-activity-name {
+    font-size: 13px;
+  }
+
+  .footer-activity-time {
+    font-size: 11px;
+  }
 }
 
 .activity-item {
@@ -336,10 +438,30 @@ body {
 }
 
 .activity-time {
-  color: gray;
+  color: rgb(236, 232, 232);
   font-size: 12px;
+}
+.no-folder-message {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 
+.sort-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.sort-dropdown label {
+  font-weight: bold;
+  
+}
 
+.sort-dropdown select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #c82333;
+}

@@ -4,11 +4,10 @@ import Logo from './Bama.png';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Loginpage from './Loginpage';
-const DashboardS = (props) => {
+const DashboardS = () => {
   let navigate = useNavigate()
   /*const [name,setName] = useState({name:'Lakhshmanan'})
   const [dept,setDept] = useState({dept:'CSE'})*/
-  const [user,setUser] = useState([])
   //console.log(user)
   // Card data
   const cardData = [
