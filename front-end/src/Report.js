@@ -4,9 +4,11 @@ import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react
 import "./Report.css";
 import Logo from "./Bama.png"; // Ensure you have a logo file in src
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Report = () => {
   let navigate = useNavigate()
+  const selector = useSelector(state=>state)
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -74,7 +76,7 @@ const Report = () => {
           <ul type="none" className='nav-list'>
             <button className='nav-button' onClick={handleHome}>Home</button>
             <button className='nav-button' onClick={handleStock}>Stock</button>
-            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='CSE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
             <button className='nav-button' onClick={handleReport}>Report</button>
             <button className='nav-button' onClick={handleInfo}>Notification</button>
             <button className='nav-button' onClick={handleProfile}>Profile</button>

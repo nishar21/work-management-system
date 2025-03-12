@@ -6,6 +6,27 @@ import { useState } from 'react';
 import Loginpage from './Loginpage';
 import { useSelector } from 'react-redux';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react";
+
+
+const folders = [
+  { name: "BLOCK 1", items: 48 },
+  { name: "HP BILL", items: 156 },
+  { name: "BENQ BILL", items: 23 },
+  { name: "HEAD OF DEPARTMENT", items: 12 },
+  { name: "Personal", items: 34 },
+  { name: "Archive", items: 89 },
+  { name: "Important", items: 15 },
+  { name: "Backup", items: 67 },
+];
+
+const repeatedFolders = Array(3).fill(folders).flat();
+
+const recentActivities = [
+  { name: "Modified Annual Report 2023.pdf", time: "2 hours ago" },
+  { name: "Created Q4 Analysis.xlsx", time: "4 hours ago" },
+  { name: "Shared Project Timeline.docx", time: "6 hours ago" },
+];
 const DashboardA = (props) => {
   //console.log(user)
   // Card data
@@ -22,6 +43,10 @@ const DashboardA = (props) => {
     setUser(users)
     console.log(users)
   }*/
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  
+  
 
 
     const handleStock =()=>{
@@ -44,25 +69,28 @@ const DashboardA = (props) => {
     }
   
     const handleInfo=()=>{
-      navigate('/news')
+      navigate('/information')
     }
 
     const ticket=()=>{
       navigate('/ticket')
     }
 
+    
+    
+
   return (
     <div className="app-container">
-      <header className="header">
+      {/*<header className="header">
         <div className='menu'>
-        {/*<GiHamburgerMenu className='menu-icon'/>
+        <GiHamburgerMenu className='menu-icon'/>
         <div>
           <select>
             <option>Dashboard</option>
             <option>Ticket</option>
             <option>Calendar</option>
           </select>
-        </div>*/}
+        </div>
         </div>
         <div className="logo-wrapper">
           <img src={Logo} alt="logo" className="logo-image" />
@@ -77,7 +105,64 @@ const DashboardA = (props) => {
             <button className='nav-button' onClick={handleProfile}>Profile</button>
           </ul>
         </nav>
+      </header>*/}
+          {/*<div className="app-container">*/} 
+      {/* Navbar */}
+      <header className="header">
+        <div className="left-section">
+          <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
+          <div className="logo-wrapper">
+            <img src={Logo} alt="logo" className="logo-image" />
+          </div>
+        </div>
+
+        {/*<nav className="nav">
+          {["Dashboard","Service","Report","News"].map((link, index) => (
+            <a key={index} href="#" className="nav-link">
+              {link}
+            </a>
+          ))}
+        </nav>*/}
+
+        <nav className="nav">
+          <ul type="none" className='nav-list'>
+            <button className='nav-button' onClick={handleHome}>Home</button>
+            <button className='nav-button' onClick={handleStock}>Stock</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
+            <button className='nav-button' onClick={handleReport}>Report</button>
+            <button className='nav-button' onClick={handleInfo}>Notification</button>
+            <button className='nav-button' onClick={handleProfile}>Profile</button>
+          </ul>
+        </nav>
+
+        <div className="right-section">
+          <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
+        </div>
+
+        {/* Popup Menus */}
+        {menuOpen && (
+          <div className="menu-popup">
+          <button className="popup-item">📊 Dashboard</button>
+          <button className="popup-item">🎟 Ticket</button>
+          <button className="popup-item">👤 Profile</button>
+          <button className="popup-item">📰 News</button>
+          <button className="popup-item">📜 Report</button>
+          <button className="popup-item">📅 Calendar</button>
+      
+        </div>
+
+        )}
+
+        {profileOpen && (
+          <div className="profile-popup">
+            <button className="popup-item">📊 Dashboard</button>
+            <button className="popup-item">👤 Profile</button>
+            <button className="popup-item">📰 News</button>
+            <button className="popup-item">🚪 Logout</button>
+          </div>
+        )}
       </header>
+
       <main className="main-content">
         <div className="Back-Container">
           <div className="overview-cards">

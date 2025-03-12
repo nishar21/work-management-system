@@ -170,7 +170,7 @@ const Mech = () => {
         </header>
 
         <main className="content">
-          <h2>Computer and Science</h2>
+          <h2>Mechanical Engineering</h2>
           {selector.userDetails.dept=='ECE' && <button className="add-button" onClick={() => setIsModalOpen(true)}>
             + ADD
           </button>}

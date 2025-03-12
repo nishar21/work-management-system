@@ -130,7 +130,7 @@ const Stock = () => {
           <ul type="none" className='nav-list'>
             <button className='nav-button' onClick={handleHome}>Home</button>
             <button className='nav-button' onClick={handleStock}>Stock</button>
-            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='CSE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
             <button className='nav-button' onClick={handleReport}>Report</button>
             <button className='nav-button' onClick={handleInfo}>Notification</button>
             <button className='nav-button' onClick={handleProfile}>Profile</button>

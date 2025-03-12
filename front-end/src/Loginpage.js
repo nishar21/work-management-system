@@ -4,7 +4,7 @@ import bgImage from "./college-bg.jpg"; // Background image
 import collegeLogo from "./college-logo.png"; // Example path for college logo
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { User, User_position, User_varia } from "./Redux/Action";
+import { User } from "./Redux/Action";
 //import Dashboard from "./Dashboard";
 
 function Loginpage(props){

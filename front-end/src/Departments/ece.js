@@ -4,7 +4,7 @@ import Logo from "./assets/Sathyaa.png"; // Ensure correct path to the logo
 import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react";
 import "./Cs.css";
 
-const Law = () => {
+const Ece = () => {
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("data");
     return savedData
@@ -137,7 +137,7 @@ const Law = () => {
         </header>
 
         <main className="content">
-          <h2>Law</h2>
+          <h2>Electronics and Communication Engineering</h2>
           <button className="add-button" onClick={() => setIsModalOpen(true)}>
             + ADD
           </button>
@@ -228,4 +228,4 @@ const Law = () => {
   );
 };
 
-export default Law;
+export default Ece;

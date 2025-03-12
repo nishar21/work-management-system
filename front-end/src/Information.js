@@ -60,6 +60,10 @@ const Information = () => {
     setFolders(sortedFolders);
   };
 
+  const folder=()=>{
+    navigate('/filepage')
+  }
+
   return (
     <div className="app-container">
       {/* Navbar */}
@@ -130,7 +134,7 @@ const Information = () => {
               )}
             </div>
 
-            <div className="folders-grid">
+            <div className="folders-grid" onClick={()=>{folder()}}>
               {folders.length === 0 ? (
                 <div className="no-folder-message">
                   <p>No folders available. Create a new folder to get started.</p>

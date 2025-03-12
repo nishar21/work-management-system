@@ -5,9 +5,11 @@ import Logo from './Bama.png';
 import DefaultProfileIcon from "./assets/profile.jpg";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   let navigate = useNavigate()
+  const selector = useSelector(state=>state)
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -47,6 +49,12 @@ const Profile = () => {
   return (
     <div className="app-container">
       <header className="header">
+      <div className="left-section">
+          <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
+          {/*<div className="logo-wrapper">
+            <img src={Logo} alt="logo" className="logo-image" />
+          </div>*/}
+        </div>
         <div className="logo-wrapper">
           <img src={Logo} alt="logo" className="logo-image" />
         </div>
@@ -54,29 +62,24 @@ const Profile = () => {
           <ul type="none" className='nav-list'>
             <button className='nav-button' onClick={handleHome}>Home</button>
             <button className='nav-button' onClick={handleStock}>Stock</button>
-            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='CSE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
             <button className='nav-button' onClick={handleReport}>Report</button>
             <button className='nav-button' onClick={handleInfo}>Notification</button>
             <button className='nav-button' onClick={handleProfile}>Profile</button>
           </ul>
         </nav>
-      </header>
-      {/* Navbar 
-      <header className="header">
-        <div className="left-section">
-          <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
-          <div className="logo-wrapper">
-            <img src={Logo} alt="logo" className="logo-image" />
-          </div>
-        </div>
+      {/*</header>*/}
+      {/* Navbar */}
+      {/*<header className="header">*/}
+        
 
-        <nav className="nav">
+        {/*<nav className="nav">
           {["Dashboard", "Stock", "Service", "Report"].map((link, index) => (
             <a key={index} href="#" className="nav-link">
               {link}
             </a>
           ))}
-        </nav>
+        </nav>*/}
 
         <div className="right-section">
           <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
@@ -98,10 +101,11 @@ const Profile = () => {
           <div className="profile-popup">
             <button className="popup-item">📊 Dashboard</button>
             <button className="popup-item">👤 Profile</button>
+            <button className="popup-item">👤 News</button>
             <button className="popup-item">🚪 Logout</button>
           </div>
         )}
-      </header>*/}
+      </header>
 
       {/* Profile Info Section */}
       <div className="profile-container">

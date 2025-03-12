@@ -1,20 +1,8 @@
-import { useState } from "react";
-import { Folder, Upload, Share, Download, Trash, Menu, User } from "lucide-react";
-import "./Acmaintenance.css"; // Updated file name
+import React, { useState } from "react";
+import { Folder, Menu, User } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import "./Information.css"; // Import the CSS file
 import Logo from "./Bama.png"; // Ensure the logo path is correct
-
-const folders = [
-  { name: "BLOCK 1", items: 48 },
-  { name: "HP BILL", items: 156 },
-  { name: "BENQ BILL", items: 23 },
-  { name: "HEAD OF DEPARTMENT", items: 12 },
-  { name: "Personal", items: 34 },
-  { name: "Archive", items: 89 },
-  { name: "Important", items: 15 },
-  { name: "Backup", items: 67 },
-];
-
-const repeatedFolders = Array(3).fill(folders).flat();
 
 const recentActivities = [
   { name: "Modified Annual Report 2023.pdf", time: "2 hours ago" },
@@ -22,9 +10,59 @@ const recentActivities = [
   { name: "Shared Project Timeline.docx", time: "6 hours ago" },
 ];
 
-const Acmaintenance = () => {
+const ACmaintenance = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [folders, setFolders] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("name"); // State for sort criteria
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleNewFolderClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleSaveFolder = () => {
+    if (newFolderName.trim()) {
+      const newFolder = {
+        name: newFolderName,
+        items: 0,
+        date: new Date().toLocaleDateString(), // Add date for sorting
+        size: Math.floor(Math.random() * 1000), // Add size for sorting
+      };
+      setFolders([...folders, newFolder]);
+      setIsPopupOpen(false);
+      setNewFolderName("");
+    }
+  };
+
+  const handleFolderClick = (folderName) => {
+    navigate(`/folder/${folderName}`); // Navigate to the FilePage with folderName
+  };
+
+  const handleSortChange = (criteria) => {
+    setSortCriteria(criteria);
+    sortFolders(criteria);
+  };
+
+  const sortFolders = (criteria) => {
+    const sortedFolders = [...folders].sort((a, b) => {
+      if (criteria === "name") {
+        return a.name.localeCompare(b.name);
+      } else if (criteria === "date") {
+        return new Date(b.date) - new Date(a.date);
+      } else if (criteria === "size") {
+        return b.size - a.size;
+      }
+      return 0;
+    });
+    setFolders(sortedFolders);
+  };
+
+  const folder=()=>{
+    navigate('/filepage')
+  }
 
   return (
     <div className="app-container">
@@ -39,7 +77,9 @@ const Acmaintenance = () => {
 
         <nav className="nav">
           {["Dashboard", "Stock", "Service", "Report"].map((link, index) => (
-            <a key={index} href="#" className="nav-link">{link}</a>
+            <a key={index} href="#" className="nav-link">
+              {link}
+            </a>
           ))}
         </nav>
 
@@ -78,58 +118,86 @@ const Acmaintenance = () => {
           {/* Left Section - Folders */}
           <div className="folders-section">
             <div className="folders-header">
-              <div className="view-buttons"></div>
-              <button className="sort-btn">Sort by: Name</button>
+              {folders.length > 1 && (
+                <div className="sort-dropdown">
+                  <label htmlFor="sort-by">Sort by:</label>
+                  <select
+                    id="sort-by"
+                    value={sortCriteria}
+                    onChange={(e) => handleSortChange(e.target.value)}
+                  >
+                    <option value="name">Name</option>
+                    <option value="date">Date</option>
+                    <option value="size">Size</option>
+                  </select>
+                </div>
+              )}
             </div>
 
-            <div className="folders-grid">
-              {repeatedFolders.map((folder, index) => (
-                <div key={index} className="folder-card">
-                  <Folder className="folder-icon" size={30} />
-                  <p className="folder-name">{folder.name}</p>
-                  <p className="folder-items">{folder.items} items</p>
-                  <p className="folder-date">Modified: 2 days ago</p>
+            <div className="folders-grid" onClick={()=>{folder()}}>
+              {folders.length === 0 ? (
+                <div className="no-folder-message">
+                  <p>No folders available. Create a new folder to get started.</p>
                 </div>
-              ))}
+              ) : (
+                folders.map((folder, index) => (
+                  <div
+                    key={index}
+                    className="folder-card"
+                    onClick={() => handleFolderClick(folder.name)}
+                  >
+                    <Folder className="folder-icon" size={30} />
+                    <p className="folder-name">{folder.name}</p>
+                    <p className="folder-items">{folder.items} items</p>
+                    <p className="folder-date">Modified: {folder.date}</p>
+                    <p className="folder-size">Size: {folder.size} KB</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
           {/* Right Section - Quick Actions & Recent Activity */}
           <div className="right-panel">
-            <button className="new-folder-btn"> New Folder+</button>
-
-            <div className="quick-actions">
-              <h2>Quick Actions</h2>
-              <div className="action-buttons">
-                <button className="action-btn">
-                  <Upload size={18} className="action-icon" /> Upload
-                </button>
-                <button className="action-btn">
-                  <Share size={18} className="action-icon" /> Share
-                </button>
-                <button className="action-btn">
-                  <Download size={18} className="action-icon" /> Download
-                </button>
-                <button className="action-btn">
-                  <Trash size={18} className="action-icon" /> Delete
-                </button>
-              </div>
-            </div>
-
-            <div className="recent-activity">
-              <h2>Recent Activity</h2>
-              {recentActivities.map((activity, index) => (
-                <div key={index} className="activity-item">
-                  <p className="activity-name">{activity.name}</p>
-                  <p className="activity-time">{activity.time}</p>
-                </div>
-              ))}
-            </div>
+            <button className="new-folder-btn" onClick={handleNewFolderClick}>
+              New Folder+
+            </button>
           </div>
         </div>
       </div>
+
+      <footer className="footer">
+        <div className="footer-content">
+          <h2>Recent Activity</h2>
+          <div className="footer-activity-list">
+            {recentActivities.map((activity, index) => (
+              <div key={index} className="footer-activity-item">
+                <p className="footer-activity-name">{activity.name}</p>
+                <p className="footer-activity-time">{activity.time}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+      {/* Popup for New Folder */}
+      {isPopupOpen && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h3>Create New Folder</h3>
+            <input
+              type="text"
+              placeholder="Enter folder name"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+            />
+            <button onClick={handleSaveFolder}>Save</button>
+            <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Acmaintenance;
+export default ACmaintenance;

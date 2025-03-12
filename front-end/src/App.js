@@ -6,6 +6,7 @@ import DashboardM from './Dashboard-management.js';
 import Stock from './Stock.js'
 import Maintenance from './Maintenance.js'
 import Information  from './Information.js'
+import FilePage from './file_page.js';
 import Report from './Report.js'
 import News from './News.js'
 import WaterService from './WaterService.js'
@@ -25,6 +26,9 @@ import { Provider } from "react-redux";
 import store from './Redux/Store.js'
 import Container from './Redux/Container.js';
 import Ticket from './Ticket.js';
+import Law from './Departments/law.js';
+import Ece from './Departments/ece.js';
+import Eee from './Departments/eee.js';
 
 
 function App() {
@@ -43,6 +47,7 @@ function App() {
             <Route path='/stock' element={<Stock/>}></Route>
             <Route path='/maintenance' element={<Maintenance/>}></Route>
             <Route path='/information' element={<Information/>}></Route>
+            <Route path='/filepage' element={<FilePage/>}></Route>
             <Route path='/report' element={<Report/>}></Route>
             <Route path='/news' element={<News/>}></Route>
             <Route path='/waterService' element={<WaterService/>}></Route>
@@ -55,6 +60,9 @@ function App() {
             <Route path='/mech' element={<Mech/>}></Route>
             <Route path='/civil' element={<Civil/>}></Route>
             <Route path='/arts' element={<Arts/>}></Route>
+            <Route path='/law' element={<Law/>}></Route>
+            <Route path='/ece' element={<Ece/>}></Route>
+            <Route path='/eee' element={<Eee/>}></Route>
             <Route path='/container' element={<Container/>}></Route>
             <Route path='/ticket' element={<Ticket/>}></Route>
 
