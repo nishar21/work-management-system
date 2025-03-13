@@ -1,16 +1,53 @@
 //import React from 'react';
 import './Dash.css';
 import Logo from './Bama.png';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Loginpage from './Loginpage';
+import { useSelector } from 'react-redux';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
+import { Folder, Upload, Share, Download, Trash, Menu, User,Bell } from "lucide-react";
+import DashboardS from './Dashboard-Super';
+
+
+const folders = [
+  { name: "BLOCK 1", items: 48 },
+  { name: "HP BILL", items: 156 },
+  { name: "BENQ BILL", items: 23 },
+  { name: "HEAD OF DEPARTMENT", items: 12 },
+  { name: "Personal", items: 34 },
+  { name: "Archive", items: 89 },
+  { name: "Important", items: 15 },
+  { name: "Backup", items: 67 },
+];
+
+const repeatedFolders = Array(3).fill(folders).flat();
+
+const recentActivities = [
+  { name: "Modified Annual Report 2023.pdf", time: "2 hours ago" },
+  { name: "Created Q4 Analysis.xlsx", time: "4 hours ago" },
+  { name: "Shared Project Timeline.docx", time: "6 hours ago" },
+];
+
+const notifications = [
+  { id: 1, text: "You have upcoming activities due", time: "26 days 15 hours ago" },
+  { id: 2, text: "Maintenance task completed", time: "3 days ago" },
+  { id: 3, text: "New request received", time: "1 hour ago" }
+];
+
 const DashboardM = (props) => {
-  let navigate = useNavigate()
-  /*const [name,setName] = useState({name:'Lakhshmanan'})
-  const [dept,setDept] = useState({dept:'CSE'})*/
-  const [user,setUser] = useState([])
   //console.log(user)
   // Card data
+  let navigate = useNavigate()
+  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false); // State for notification popup
+  /*const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);*/
+
+  const selector = useSelector(state=>state)
   const cardData = [
     { label: "Department", count: "1500+" },
     { label: "Rooms", count: "1500+" },
@@ -18,11 +55,16 @@ const DashboardM = (props) => {
     { label: "Teaching", count: "15" },
     { label: "Non-Teaching", count: "150" },
   ];
-
   /*function getData(users){
     setUser(users)
     console.log(users)
   }*/
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  
+  
+
+
     const handleStock =()=>{
       navigate('/stock')
     }
@@ -45,15 +87,53 @@ const DashboardM = (props) => {
     const handleInfo=()=>{
       navigate('/information')
     }
-    
+
     const ticket=()=>{
       navigate('/ticket')
     }
 
+    const news=()=>{
+      navigate('/news')
+    }
+
+    const logout=()=>{
+      navigate('/')
+    }
+
+    const toggleEditDeleteButtons = () => {
+      setShowEditDeleteButtons(!showEditDeleteButtons);
+    };
+  
+    const toggleNotifications = () => {
+      setNotificationsOpen(!notificationsOpen);
+    };
+
+    const noti=()=>{
+      navigate('/notification')
+    }
+
+    const calender=()=>{
+      navigate('/calender')
+    }
+    
+    const noti_setting=()=>{
+      navigate('/noti_setting')
+    }
+    
 
   return (
     <div className="app-container">
-      <header className="header">
+      {/*<header className="header">
+        <div className='menu'>
+        <GiHamburgerMenu className='menu-icon'/>
+        <div>
+          <select>
+            <option>Dashboard</option>
+            <option>Ticket</option>
+            <option>Calendar</option>
+          </select>
+        </div>
+        </div>
         <div className="logo-wrapper">
           <img src={Logo} alt="logo" className="logo-image" />
         </div>
@@ -61,14 +141,101 @@ const DashboardM = (props) => {
           <ul type="none" className='nav-list'>
             <button className='nav-button' onClick={handleHome}>Home</button>
             <button className='nav-button' onClick={handleStock}>Stock</button>
-            <button className='nav-button' onClick={handleMain}>Maintenance</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-button' onClick={handleMain}>Maintenance</button>}
             <button className='nav-button' onClick={handleReport}>Report</button>
             <button className='nav-button' onClick={handleInfo}>Notification</button>
             <button className='nav-button' onClick={handleProfile}>Profile</button>
           </ul>
         </nav>
-      </header>
+      </header>*/}
+          {/*<div className="app-container">*/} 
+      {/* Navbar */}
+      <header className="header">
+        <div className="left-section">
+          <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
+          <div className="logo-wrapper">
+            <img src={Logo} alt="logo" className="logo-image" />
+          </div>
+        </div>
+
+        {/*<nav className="nav">
+          {["Dashboard","Service","Report","News"].map((link, index) => (
+            <a key={index} href="#" className="nav-link">
+              {link}
+            </a>
+          ))}
+        </nav>*/}
+
+        <nav className="nav">
+          <ul type="none" className='nav'>
+            <button className='nav-link' onClick={handleHome}>Home</button>
+            <button className='nav-link' onClick={handleStock}>Stock</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
+            <button className='nav-link' onClick={handleReport}>Report</button>
+            {/*<button className='nav-link' onClick={handleInfo}>Notification</button>*/}
+          </ul>
+        </nav>
+        <div className='space'></div>
+
+        {/*<div className="right-section">
+          <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
+        </div>*/}
+
+        {/* Popup Menus */}
+        {menuOpen && (
+          <div className="menu-popup">
+          <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
+          <button className="popup-item" onClick={ticket}>🎟 Ticket</button>
+          <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
+          <button className="popup-item" onClick={news}>📰 News</button>
+          <button className="popup-item" onClick={handleReport}>📜 Report</button>
+          <button className="popup-item" onClick={calender}>📅 Calendar</button>
       
+        </div>
+
+        )}
+        <div className="right-section">
+              
+              <div className="notification-wrapper">
+                <Bell className="notification-icon" size={28} onClick={toggleNotifications} />
+                {/* Notification Popup */}
+                {notificationsOpen && (
+                  <div className="notification-popup">
+                    <div className="notification-header">
+                      <h3>Notifications</h3>
+                      <div className="notification-actions">
+                        {/*<AiOutlineCheck className="tick-icon" />*/}
+                        <AiOutlineSetting className="settings-icon" onClick={noti_setting}/>
+                      </div>
+                    </div>
+                    <div className="notification-list">
+                      {notifications.map((notification) => (
+                        <div key={notification.id} className="notification-item">
+                          <p>{notification.text}</p>
+                          <span className="notification-time">{notification.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button className="see-all-button" onClick={noti}>See all</button>
+                  </div>
+                )}
+              </div>
+              
+            </div>
+            <div>
+            <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)}/>
+            </div>
+            
+        {profileOpen && (
+          <div className="profile-popup">
+            <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
+            <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
+            <button className="popup-item" onClick={news}>📰 News</button>
+            <button className="popup-item" onClick={logout}>🚪 Logout</button>
+          </div>
+        )}
+      </header>
+
       <main className="main-content">
         <div className="Back-Container">
           <div className="overview-cards">
@@ -128,6 +295,13 @@ const DashboardM = (props) => {
               </div>
               <button type="submit">Submit</button>
             </form>*/}
+            <p>A “Ticket Raising System” is a structured process used in universities, 
+              to report issues, request services, or fulfill specific 
+              requirements. It involves submitting a formal request (referred to as a “Ticket”) 
+              through a designated platform or system. This ticket outlines the details of the 
+              issue or requirement and is assigned to the relevant department or personnel for 
+              resolution. The system ensures efficient tracking, prioritization, and communication, 
+              enabling prompt fulfillment of the user's needs.</p>
             <button className='raise' onClick={ticket}>Raise a Ticket</button>
           </section>
         </div>

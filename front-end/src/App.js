@@ -29,6 +29,9 @@ import Ticket from './Ticket.js';
 import Law from './Departments/law.js';
 import Ece from './Departments/ece.js';
 import Eee from './Departments/eee.js';
+import Notification from './Notification.js';
+import Calender from './Calender.js';
+import Notification_setting from './Notification_setting.js';
 
 
 function App() {
@@ -65,7 +68,9 @@ function App() {
             <Route path='/eee' element={<Eee/>}></Route>
             <Route path='/container' element={<Container/>}></Route>
             <Route path='/ticket' element={<Ticket/>}></Route>
-
+            <Route path='/notification' element={<Notification/>}></Route>
+            <Route path='/calender' element={<Calender/>}></Route>
+            <Route path='/noti_setting' element={<Notification_setting/>}></Route>
             
           </Routes>
         </BrowserRouter>

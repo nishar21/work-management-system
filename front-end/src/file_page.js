@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Folder, Upload, Share, Download, Eye, Trash, Menu, User, ChevronDown } from "lucide-react";
-import { useParams } from "react-router-dom"; // Import useParams to read URL parameters
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
+import { Folder, Upload, Share, Download, Trash, Menu, User,Bell,Eye } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams to read URL parameters
 import "./file_page.css";
 import Logo from "./Bama.png";
+
+const notifications = [
+  { id: 1, text: "You have upcoming activities due", time: "26 days 15 hours ago" },
+  { id: 2, text: "Maintenance task completed", time: "3 days ago" },
+  { id: 3, text: "New request received", time: "1 hour ago" }
+];
 
 const FilePage = () => {
   const { folderName } = useParams(); // Read the folderName from URL parameters
@@ -12,6 +21,16 @@ const FilePage = () => {
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
 
   const exampleFiles = [];
+
+  let navigate = useNavigate()
+  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false); // State for notification popup
+  /*const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);*/
+
+  const selector = useSelector(state=>state)
 
   useEffect(() => {
     setFiles(exampleFiles);
