@@ -69,7 +69,13 @@ const Report = () => {
   }
 
   const handleHome=()=>{
-    navigate('/dashboard-admin')
+    if (selector.userDetails.position=="End User"){
+      navigate('/enduser')
+    }
+    else{
+      navigate('/dashboard-admin')
+    }
+    
   }
 
   const handleProfile=()=>{
@@ -133,8 +139,8 @@ const Report = () => {
         <nav className="nav">
           <ul type="none" className='nav'>
             <button className='nav-link' onClick={handleHome}>Home</button>
-            <button className='nav-link' onClick={handleStock}>Stock</button>
-            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
+            {selector.userDetails.position!=="End User" && <button className='nav-link' onClick={handleStock}>Stock</button>}
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && selector.userDetails.position!=="End User" && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
             <button className='nav-link' onClick={handleReport}>Report</button>
             {/*<button className='nav-link' onClick={handleInfo}>Notification</button>*/}
           </ul>
@@ -149,7 +155,7 @@ const Report = () => {
         {menuOpen && (
           <div className="menu-popup">
           <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
-          <button className="popup-item" onClick={ticket}>🎟 Ticket</button>
+          {selector.userDetails.position!=="End User" && <button className="popup-item" onClick={ticket}>🎟 Ticket</button>}
           <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
           <button className="popup-item" onClick={news}>📰 News</button>
           <button className="popup-item" onClick={handleReport}>📜 Report</button>

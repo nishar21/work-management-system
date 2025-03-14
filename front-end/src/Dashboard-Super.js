@@ -1,15 +1,20 @@
 //import React from 'react';
 import './Dash.css';
 import Logo from './Bama.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loginpage from './Loginpage';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
 import { Folder, Upload, Share, Download, Trash, Menu, User,Bell } from "lucide-react";
-
-
+import Image1 from './assets/Nav2.png';
+import Image2 from './assets/Sat1.jpg';
+import Image3 from './assets/Sat3.jpg';
+import Image4 from './assets/Sat4.jpg';
+import Image5 from './assets/Sat2.jpg';
+import Ticket from "./assets/ticket.png";
+const images = [Image1, Image2, Image3,Image4,Image5];
 const folders = [
   { name: "BLOCK 1", items: 48 },
   { name: "HP BILL", items: 156 },
@@ -60,9 +65,23 @@ const DashboardS = (props) => {
   }*/
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  
-  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
     const handleStock =()=>{
       navigate('/stock')
@@ -236,13 +255,15 @@ const DashboardS = (props) => {
       </header>
 
       <main className="main-content">
-        <div className="Back-Container">
+        <div className="Back-Container" style={{ backgroundImage: `url(${images[currentImageIndex]})`}}>
+        <button className="arrow left" onClick={prevImage}>&#9665;</button>
+        <button className="arrow right" onClick={nextImage}>&#9655;</button>
           <div className="overview-cards">
             {cardData.map((item, index) => (
-              <div key={index} className="card">
-                <div className="card-content">
-                  <div className="card-number">{item.count}</div>
-                  <div className="card-label">{item.label}</div>
+              <div key={index} className="card-dash">
+                <div className="card-content-dash">
+                  <div className="card-number-dash">{item.count}</div>
+                  <div className="card-label-dash">{item.label}</div>
                 </div>
               </div>
             ))}
@@ -294,19 +315,13 @@ const DashboardS = (props) => {
               </div>
               <button type="submit">Submit</button>
             </form>*/}
-            <p>A “Ticket Raising System” is a structured process used in universities, 
-              to report issues, request services, or fulfill specific 
-              requirements. It involves submitting a formal request (referred to as a “Ticket”) 
-              through a designated platform or system. This ticket outlines the details of the 
-              issue or requirement and is assigned to the relevant department or personnel for 
-              resolution. The system ensures efficient tracking, prioritization, and communication, 
-              enabling prompt fulfillment of the user's needs.</p>
+            <img className='Ticket' src={Ticket} alt="My Image" width="200" />
             <button className='raise' onClick={ticket}>Raise a Ticket</button>
           </section>
         </div>
       </main>
 
-      <footer className="footer">
+      <footer className="footer-admin">
         <div className="footer-section">
           <h3>Contact Us</h3>
           <div className="footer-item">

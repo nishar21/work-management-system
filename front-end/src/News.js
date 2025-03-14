@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./News.css";
-import Logo from "./assets/Sathyaa.png"; // Import logo image
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
-import { Folder, Upload, Share, Download, Trash, Menu, User,Bell,X } from "lucide-react";
-import { useSelector } from "react-redux";
+import Logo from "./assets/Bama.png"; 
+import { Bell, Menu, User, X } from "lucide-react";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AiOutlineSetting } from "react-icons/ai";
 
 const notifications = [
   { id: 1, text: "You have upcoming activities due", time: "26 days 15 hours ago" },
@@ -17,21 +17,19 @@ const News = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [deleteIndex, setDeleteIndex] = useState(null);
   const [updates, setUpdates] = useState([
     {
       title: "New Maintenance Protocol Released",
-      completionDate: "February 10, 2025",
+      completionDate: "2025-02-10",
       description: "Updated safety protocols for handling electrical equipment maintenance...",
     },
     {
       title: "Equipment Inspection Schedule Update",
-      completionDate: "February 9, 2025",
+      completionDate: "2025-02-09",
       description: "Monthly inspection schedule for heavy machinery has been revised...",
-    },
-    {
-      title: "Maintenance Training Session",
-      completionDate: "February 8, 2025",
-      description: "Upcoming training session on new diagnostic tools implementation...",
     },
   ]);
 
@@ -40,6 +38,17 @@ const News = () => {
   const [newCompletionDate, setNewCompletionDate] = useState("");
   const [newDescription, setNewDescription] = useState("");
   let navigate = useNavigate()
+  const selector = useSelector(state=>state)
+  const [profileImage, setProfileImage] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setProfileImage(imageURL);
+    }
+  };
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -47,7 +56,7 @@ const News = () => {
   /*const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);*/
 
-  const selector = useSelector(state=>state)
+  // Handle Add/Edit Submit
   const handleSubmit = () => {
     if (newTitle && newCompletionDate && newDescription) {
       const newUpdate = {
@@ -55,12 +64,51 @@ const News = () => {
         completionDate: newCompletionDate,
         description: newDescription,
       };
-      setUpdates([newUpdate, ...updates]); // Add new update to the top of the list
-      setModalOpen(false); // Close modal
-      setNewTitle("");
-      setNewCompletionDate("");
-      setNewDescription("");
+
+      if (editIndex !== null) {
+        const updatedUpdates = [...updates];
+        updatedUpdates[editIndex] = newUpdate;
+        setUpdates(updatedUpdates);
+        setEditIndex(null);
+      } else {
+        setUpdates([newUpdate, ...updates]); 
+      }
+
+      setModalOpen(false);
+      resetForm();
     }
+  };
+
+  // Handle Delete
+  const handleDelete = () => {
+    if (deleteIndex !== null) {
+      setUpdates(updates.filter((_, index) => index !== deleteIndex));
+      setDeleteIndex(null);
+      setDeleteModalOpen(false);
+    }
+  };
+
+  // Open Edit Modal
+  const handleEdit = (index) => {
+    const update = updates[index];
+    setNewTitle(update.title);
+    setNewCompletionDate(update.completionDate);
+    setNewDescription(update.description);
+    setEditIndex(index);
+    setModalOpen(true);
+  };
+
+  // Open Delete Modal
+  const handleDeleteClick = (index) => {
+    setDeleteIndex(index);
+    setDeleteModalOpen(true);
+  };
+
+  // Reset Form
+  const resetForm = () => {
+    setNewTitle("");
+    setNewCompletionDate("");
+    setNewDescription("");
   };
 
   const handleStock =()=>{
@@ -75,7 +123,12 @@ const News = () => {
   }
 
   const handleHome=()=>{
-    navigate('/dashboard-admin')
+    if (selector.userDetails.position=="End User"){
+      navigate('/enduser')
+    }
+    else{
+      navigate('/dashboard-admin')
+    }
   }
 
   const handleProfile=()=>{
@@ -120,7 +173,6 @@ const News = () => {
 
   return (
     <div className="app-container">
-      {/* Navbar */}
       <header className="header">
         <div className="left-section">
           <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
@@ -128,7 +180,7 @@ const News = () => {
             <img src={Logo} alt="logo" className="logo-image" />
           </div>
         </div>
-
+         
         {/*<nav className="nav">
           {["Dashboard","Service","Report","News"].map((link, index) => (
             <a key={index} href="#" className="nav-link">
@@ -140,8 +192,8 @@ const News = () => {
         <nav className="nav">
           <ul type="none" className='nav'>
             <button className='nav-link' onClick={handleHome}>Home</button>
-            <button className='nav-link' onClick={handleStock}>Stock</button>
-            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
+            {selector.userDetails.position!=="End User" && <button className='nav-link' onClick={handleStock}>Stock</button>}
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && selector.userDetails.position!=="End User" && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
             <button className='nav-link' onClick={handleReport}>Report</button>
             {/*<button className='nav-link' onClick={handleInfo}>Notification</button>*/}
           </ul>
@@ -207,16 +259,14 @@ const News = () => {
         )}
       </header>
 
-      {/* News Section */}
       <div className="news-container">
-        <h2 className="news-title">Latest Updates</h2>
+        <h2 className="news-title">Latest News</h2>
         <div className="news-card">
           <div className="news-header">
             <h3>Latest Updates</h3>
-            <div className="news-actions">
-              <button className="filter-button">⚙️ Filter</button>
-              <button className="add-button" onClick={() => setModalOpen(true)}>➕ Add Update</button>
-            </div>
+            <button className="add-button-news" onClick={() => { setModalOpen(true); resetForm(); }}>
+              ➕ Add Update
+            </button>
           </div>
           {updates.map((update, index) => (
             <div key={index} className="news-item">
@@ -225,17 +275,21 @@ const News = () => {
                 <p className="news-meta">Completed at: {update.completionDate}</p>
                 <p className="news-description">{update.description}</p>
               </div>
+              <div className="news-actions">
+                <FaEdit className="edit-icon" onClick={() => handleEdit(index)} />
+                <FaTrash className="delete-icon" onClick={() => handleDeleteClick(index)} />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Modal Popup */}
+      {/* Add/Edit Modal */}
       {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
-              <h3>Add Update</h3>
+        <div className="modal-overlay-news">
+          <div className="modal-news">
+            <div className="modal-header-news">
+              <h3>{editIndex !== null ? "Edit Update" : "Add Update"}</h3>
               <X className="close-icon" size={24} onClick={() => setModalOpen(false)} />
             </div>
             <input
@@ -247,7 +301,6 @@ const News = () => {
             />
             <input
               type="date"
-              placeholder="Completed At"
               value={newCompletionDate}
               onChange={(e) => setNewCompletionDate(e.target.value)}
               className="modal-input"
@@ -258,7 +311,22 @@ const News = () => {
               onChange={(e) => setNewDescription(e.target.value)}
               className="modal-textarea"
             />
-            <button className="submit-button" onClick={handleSubmit}>Submit</button>
+            <button className="submit-button" onClick={handleSubmit}>
+              {editIndex !== null ? "Update" : "Submit"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && (
+        <div className="modal-overlay-news">
+          <div className="delete-modal">
+            <h3>Are you sure you want to delete this news ?</h3>
+            <div className="delete-actions">
+              <button className="delete-confirm" onClick={handleDelete}>Yes</button>
+              <button className="delete-cancel" onClick={() => setDeleteModalOpen(false)}>No</button>
+            </div>
           </div>
         </div>
       )}

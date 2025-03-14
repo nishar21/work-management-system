@@ -78,7 +78,7 @@ const Transport = () => {
   };
 
   const folder=()=>{
-    navigate('/filepage')
+    navigate('/filepage-t')
   }
 
   const handleStock =()=>{

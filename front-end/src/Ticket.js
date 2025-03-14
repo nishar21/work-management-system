@@ -129,7 +129,7 @@ const Ticket = () => {
   }
 
   return (
-    <div className="app-container">
+    <div className="app-container-ticket">
       {/* Navbar */}
       <header className="header">
         <div className="left-section">

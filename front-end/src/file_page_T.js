@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
-import { Folder, Upload, Share, Download, Trash, Menu, User,Bell } from "lucide-react";
+import { Folder, Upload, Share, Download, Trash, Menu, User,Bell,Eye } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import "./Information.css"; // Import the CSS file
-import Logo from "./Bama.png"; // Ensure the logo path is correct
-
-const recentActivities = [
-  { name: "Modified Annual Report 2023.pdf", time: "2 hours ago" },
-  { name: "Created Q4 Analysis.xlsx", time: "4 hours ago" },
-  { name: "Shared Project Timeline.docx", time: "6 hours ago" },
-];
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams to read URL parameters
+import "./file_page.css";
+import Logo from "./Bama.png";
 
 const notifications = [
   { id: 1, text: "You have upcoming activities due", time: "26 days 15 hours ago" },
@@ -19,13 +13,18 @@ const notifications = [
   { id: 3, text: "New request received", time: "1 hour ago" }
 ];
 
-const PowerElectrical = () => {
+
+
+
+const FilePage_T = () => {
+  const { folderName } = useParams(); // Read the folderName from URL parameters
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [folders, setFolders] = useState([]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [newFolderName, setNewFolderName] = useState("");
-  const [sortCriteria, setSortCriteria] = useState("name"); // State for sort criteria
+  const [files, setFiles] = useState([]);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+
+  const exampleFiles = [];
+
   let navigate = useNavigate()
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,50 +35,9 @@ const PowerElectrical = () => {
 
   const selector = useSelector(state=>state)
 
-  const handleNewFolderClick = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handleSaveFolder = () => {
-    if (newFolderName.trim()) {
-      const newFolder = {
-        name: newFolderName,
-        items: 0,
-        date: new Date().toLocaleDateString(), // Add date for sorting
-        size: Math.floor(Math.random() * 1000), // Add size for sorting
-      };
-      setFolders([...folders, newFolder]);
-      setIsPopupOpen(false);
-      setNewFolderName("");
-    }
-  };
-
-  const handleFolderClick = (folderName) => {
-    navigate(`/folder/${folderName}`); // Navigate to the FilePage with folderName
-  };
-
-  const handleSortChange = (criteria) => {
-    setSortCriteria(criteria);
-    sortFolders(criteria);
-  };
-
-  const sortFolders = (criteria) => {
-    const sortedFolders = [...folders].sort((a, b) => {
-      if (criteria === "name") {
-        return a.name.localeCompare(b.name);
-      } else if (criteria === "date") {
-        return new Date(b.date) - new Date(a.date);
-      } else if (criteria === "size") {
-        return b.size - a.size;
-      }
-      return 0;
-    });
-    setFolders(sortedFolders);
-  };
-
-  const folder=()=>{
-    navigate('/filepage-pe')
-  }
+  useEffect(() => {
+    setFiles(exampleFiles);
+  }, [folderName]);
 
   const handleStock =()=>{
     navigate('/stock')
@@ -87,47 +45,47 @@ const PowerElectrical = () => {
   const handleReport=()=>{
     navigate('/report')
   }
-
+  
   const handleMain=()=>{
     navigate('/maintenance')
   }
-
+  
   const handleHome=()=>{
     navigate('/dashboard-admin')
   }
-
+  
   const handleProfile=()=>{
     navigate('/profile')
   }
-
+  
   const handleInfo=()=>{
     navigate('/information')
   }
-
+  
   const ticket=()=>{
     navigate('/ticket')
   }
-
+  
   const news=()=>{
     navigate('/news')
   }
-
+  
   const logout=()=>{
     navigate('/')
   }
-
+  
   const toggleEditDeleteButtons = () => {
     setShowEditDeleteButtons(!showEditDeleteButtons);
   };
-
+  
   const toggleNotifications = () => {
     setNotificationsOpen(!notificationsOpen);
   };
-
+  
   const noti=()=>{
     navigate('/notification')
   }
-
+  
   const calender=()=>{
     navigate('/calender')
   }
@@ -225,94 +183,56 @@ const PowerElectrical = () => {
         )}
       </header>
 
-      {/* Main Dashboard */}
+      {/* Main Content */}
       <div className="dashboard-container">
-        <h1 className="dashboard-title">POWER ELECTRICAL</h1>
+        <h1 className="dashboard-title">TRANSPORT</h1><br></br>
+        <h2 className="folder-title">{folderName}</h2> {/* Display the folder name */}
 
-        <div className="dashboard-content">
-          {/* Left Section - Folders */}
-          <div className="folders-section">
-            <div className="folders-header">
-              {folders.length > 1 && (
-                <div className="sort-dropdown">
-                  <label htmlFor="sort-by">Sort by:</label>
-                  <select
-                    id="sort-by"
-                    value={sortCriteria}
-                    onChange={(e) => handleSortChange(e.target.value)}
-                  >
-                    <option value="name">Name</option>
-                    <option value="date">Date</option>
-                    <option value="size">Size</option>
-                  </select>
-                </div>
-              )}
+        <div className="quick-actions">
+          <div className="hamburger-menu" onClick={() => setQuickActionsOpen(!quickActionsOpen)}>
+            <div className="hamburger-line"></div>
+            <div className="hamburger-line"></div>
+            <div className="hamburger-line"></div>
+          </div><br></br><br></br>
+          {quickActionsOpen && (
+            <div className="action-buttons">
+              <button className="action-btn">
+                <Upload size={18} className="action-icon" /> Upload
+              </button>
+              <button className="action-btn">
+                <Share size={18} className="action-icon" /> Share
+              </button>
+              <button className="action-btn">
+                <Download size={18} className="action-icon" /> Download
+              </button>
+              <button className="action-btn">
+                <Eye size={18} className="action-icon" /> View
+              </button>
+              <button className="action-btn">
+                <Trash size={18} className="action-icon" /> Delete
+              </button>
             </div>
+          )}
+        </div>
 
-            <div className="folders-grid" onClick={()=>{folder()}}>
-              {folders.length === 0 ? (
-                <div className="no-folder-message">
-                  <p>No folders available. Create a new folder to get started.</p>
+        <div className="file-container">
+          {files.length > 0 ? (
+            files.map((file, index) => (
+              <div key={index} className="file-card">
+                <Folder className="file-icon" size={20} />
+                <div className="file-details">
+                  <p className="file-name">{file.name}</p>
+                  <p className="file-size">{file.size}</p>
                 </div>
-              ) : (
-                folders.map((folder, index) => (
-                  <div
-                    key={index}
-                    className="folder-card"
-                    onClick={() => handleFolderClick(folder.name)}
-                  >
-                    <Folder className="folder-icon" size={30} />
-                    <p className="folder-name">{folder.name}</p>
-                    <p className="folder-items">{folder.items} items</p>
-                    <p className="folder-date">Modified: {folder.date}</p>
-                    <p className="folder-size">Size: {folder.size} KB</p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Right Section - Quick Actions & Recent Activity */}
-          <div className="right-panel">
-            <button className="new-folder-btn" onClick={handleNewFolderClick}>
-              New Folder+
-            </button>
-          </div>
+              </div>
+            ))
+          ) : (
+            <p className="no-files-msg">No files in this folder.</p>
+          )}
         </div>
       </div>
-
-      <footer className="footer">
-        <div className="footer-content">
-          <h2>Recent Activity</h2>
-          <div className="footer-activity-list">
-            {recentActivities.map((activity, index) => (
-              <div key={index} className="footer-activity-item">
-                <p className="footer-activity-name">{activity.name}</p>
-                <p className="footer-activity-time">{activity.time}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </footer>
-
-      {/* Popup for New Folder */}
-      {isPopupOpen && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h3>Create New Folder</h3>
-            <input
-              type="text"
-              placeholder="Enter folder name"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-            />
-            <button onClick={handleSaveFolder}>Save</button>
-            <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default PowerElectrical;
+export default FilePage_T;

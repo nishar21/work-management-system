@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaBars, FaTimes, FaUser } from "react-icons/fa"; 
+import { FaBars, FaTimes, FaUser } from "react-icons/fa";
 import Logo from "./assets/Sathyaa.png"; // Ensure correct path to the logo
-import { Link, useNavigate } from 'react-router-dom';
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
-import { Folder, Upload, Share, Download, Trash, Menu, User,Bell } from "lucide-react";
-import { useSelector } from "react-redux";
+import { Folder, Upload, Share, Download, Trash, Menu, User, Bell } from "lucide-react";
+import { AiOutlineEdit, AiOutlineSetting } from "react-icons/ai"; // Import AiOutlineEdit
 import "./Cs.css";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const notifications = [
   { id: 1, text: "You have upcoming activities due", time: "26 days 15 hours ago" },
@@ -15,16 +14,6 @@ const notifications = [
 ];
 
 const Eee = () => {
-
-  let navigate = useNavigate()
-  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false); // State for notification popup
-  /*const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);*/
-
-  const selector = useSelector(state=>state)
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("data");
     return savedData
@@ -44,7 +33,19 @@ const Eee = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false); // Global edit mode
+  const [deleteMode, setDeleteMode] = useState(false); // Global delete mode
+  const [editingIndex, setEditingIndex] = useState(null); // Index of the card being edited
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false); // Confirmation popup
+  const [confirmationMessage, setConfirmationMessage] = useState(""); // Confirmation message
+  const [confirmationAction, setConfirmationAction] = useState(null); // Action to perform on confirmation
+  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false); // Toggle edit/delete buttons
+  const [notificationsOpen, setNotificationsOpen] = useState(false); // State for notification popup
+  /*const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);*/
+  let navigate = useNavigate()
 
+  const selector = useSelector(state=>state)
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(data));
   }, [data]);
@@ -70,7 +71,7 @@ const Eee = () => {
     setData([...data, { category: newCategory, blocks: newBlocks, values: newValues }]);
 
     setTimeout(() => {
-      const lastCard = document.querySelector(".card-container .card:last-child");
+      const lastCard = document.querySelector(".card-container-cs .card-cs:last-child");
       if (lastCard) {
         lastCard.scrollIntoView({ behavior: "smooth" });
       }
@@ -84,9 +85,38 @@ const Eee = () => {
   };
 
   const handleDeleteEntry = (index) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    setFilteredData(filteredData.filter((item) => item !== data[index]));
+    setConfirmationMessage("Are you sure you want to delete this entry?");
+    setConfirmationAction(() => () => {
+      const updatedData = data.filter((_, i) => i !== index);
+      setFilteredData(filteredData.filter((item) => item !== data[index]));
+      setData(updatedData);
+      setShowConfirmationPopup(false);
+    });
+    setShowConfirmationPopup(true);
+  };
+
+  const handleEditEntry = (index) => {
+    setEditingIndex(index);
+    const entry = data[index];
+    setNewCategory(entry.category);
+    setBlockCount(entry.blocks.length);
+    setNewBlocks([...entry.blocks]);
+    setNewValues([...entry.values]);
+    setIsModalOpen(true);
+  };
+
+  const saveEditedEntry = () => {
+    if (newCategory.trim() === "") return;
+
+    const updatedData = [...data];
+    updatedData[editingIndex] = { category: newCategory, blocks: newBlocks, values: newValues };
     setData(updatedData);
+    setEditingIndex(null);
+    setIsModalOpen(false);
+    setNewCategory("");
+    setBlockCount(4);
+    setNewBlocks(Array(4).fill("Block"));
+    setNewValues(Array(4).fill(0));
   };
 
   const handleSearch = () => {
@@ -100,6 +130,37 @@ const Eee = () => {
     );
     setFilteredData(result);
   };
+
+  const confirmAction = () => {
+    if (confirmationAction) {
+      confirmationAction();
+    }
+  };
+
+  const cancelAction = () => {
+    setShowConfirmationPopup(false);
+    setConfirmationAction(null);
+    setConfirmationMessage("");
+  };
+
+  const toggleEditDeleteButtons = () => {
+    setShowEditDeleteButtons(!showEditDeleteButtons);
+  };
+
+  const handleAddButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleEditButtonClick = () => {
+    setEditMode(!editMode);
+    setDeleteMode(false);
+  };
+
+  const handleDeleteButtonClick = () => {
+    setDeleteMode(!deleteMode);
+    setEditMode(false);
+  };
+
   const handleStock =()=>{
     navigate('/stock')
   }
@@ -135,10 +196,6 @@ const Eee = () => {
     navigate('/')
   }
 
-  const toggleEditDeleteButtons = () => {
-    setShowEditDeleteButtons(!showEditDeleteButtons);
-  };
-
   const toggleNotifications = () => {
     setNotificationsOpen(!notificationsOpen);
   };
@@ -157,7 +214,7 @@ const Eee = () => {
 
   return (
     <div className="app-container">
-       {/* Navbar */}
+      {/* Navbar */}
       <header className="header">
         <div className="left-section">
           <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
@@ -243,6 +300,7 @@ const Eee = () => {
           </div>
         )}
       </header>
+
       {/* Main Content */}
       <div className="main-content">
         <header className="top-nav">
@@ -256,18 +314,47 @@ const Eee = () => {
           />
         </header>
 
-        <main className="content">
-          <h2>Electronics and Electrical Engineering</h2>
-          <button className="add-button" onClick={() => setIsModalOpen(true)}>
-            + ADD
+        {/* Action Buttons Container */}
+        <div className="action-buttons-container-cs">
+          <div>
+          <button className="pen-icon-button-cs" onClick={toggleEditDeleteButtons}>
+            <AiOutlineEdit size={24} />
           </button>
+          </div>
+          {showEditDeleteButtons && (
+            <div className="action-buttons-cs">
+              <button className="add-button-cs" onClick={handleAddButtonClick}>Add New</button>
+              <button className="edit-button-cs" onClick={handleEditButtonClick}>
+                {editMode ? "Cancel Edit" : "Edit"}
+              </button>
+              <button className="delete-button-cs" onClick={handleDeleteButtonClick}>
+                {deleteMode ? "Cancel Delete" : "Delete"}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <main className="content">
+          <h2>Computer and Science</h2>
 
           {data.length === 0 ? (
             <div className="empty-message">No classes added yet.</div>
           ) : (
-            <div className="card-container">
+            <div className="card-container-cs">
               {(filteredData.length === 0 ? data : filteredData).map((item, index) => (
-                <div key={index} className="card">
+                <div key={index} className="card-cs">
+                  {/* Edit and Delete Icons */}
+                  {editMode && (
+                    <button className="edit-icon-button-cs" onClick={() => handleEditEntry(index)}>
+                      ✏
+                    </button>
+                  )}
+                  {deleteMode && (
+                    <button className="delete-icon-button-cs" onClick={() => handleDeleteEntry(index)}>
+                      🗑
+                    </button>
+                  )}
+
                   <h3>{item.category}</h3>
                   <table>
                     <thead>
@@ -289,21 +376,18 @@ const Eee = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <button className="remove-button" onClick={() => handleDeleteEntry(index)}>
-                    Remove
-                  </button>
                 </div>
               ))}
             </div>
           )}
         </main>
 
-        {/* Modal for Adding New Entry */}
+        {/* Modal for Adding/Editing Entry */}
         {isModalOpen && (
           <div className="modal">
             <div className="modal-content">
               <FaTimes className="close-icon" onClick={() => setIsModalOpen(false)} />
-              <h3>Add New Entry</h3>
+              <h3>{editingIndex !== null ? "Edit Entry" : "Add New Entry"}</h3>
               <input
                 type="text"
                 placeholder="Category"
@@ -338,8 +422,21 @@ const Eee = () => {
                   </div>
                 ))}
               </div>
-              <button onClick={addNewEntry}>Add</button>
+              <button onClick={editingIndex !== null ? saveEditedEntry : addNewEntry}>
+                {editingIndex !== null ? "Save" : "Add"}
+              </button>
               <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation Popup */}
+        {showConfirmationPopup && (
+          <div className="popup-overlay">
+            <div className="popup-content">
+              <h3>{confirmationMessage}</h3>
+              <button onClick={confirmAction}>Yes</button>
+              <button onClick={cancelAction}>Cancel</button>
             </div>
           </div>
         )}

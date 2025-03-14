@@ -49,7 +49,12 @@ const Profile = () => {
   }
 
   const handleHome=()=>{
-    navigate('/dashboard-admin')
+    if (selector.userDetails.position=="End User"){
+      navigate('/enduser')
+    }
+    else{
+      navigate('/dashboard-admin')
+    }
   }
 
   const handleProfile=()=>{
@@ -112,8 +117,8 @@ const Profile = () => {
         <nav className="nav">
           <ul type="none" className='nav'>
             <button className='nav-link' onClick={handleHome}>Home</button>
-            <button className='nav-link' onClick={handleStock}>Stock</button>
-            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
+            {selector.userDetails.position!=="End User" && <button className='nav-link' onClick={handleStock}>Stock</button>}
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && selector.userDetails.position!=="End User" &&  <button className='nav-link' onClick={handleMain}>Maintenance</button>}
             <button className='nav-link' onClick={handleReport}>Report</button>
             {/*<button className='nav-link' onClick={handleInfo}>Notification</button>*/}
           </ul>
@@ -128,7 +133,7 @@ const Profile = () => {
         {menuOpen && (
           <div className="menu-popup">
           <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
-          <button className="popup-item" onClick={ticket}>🎟 Ticket</button>
+          {selector.userDetails.position!=="End User" && <button className="popup-item" onClick={ticket}>🎟 Ticket</button>}
           <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
           <button className="popup-item" onClick={news}>📰 News</button>
           <button className="popup-item" onClick={handleReport}>📜 Report</button>
@@ -198,14 +203,14 @@ const Profile = () => {
               />
             </label>
             <h1 className="profile-name">Tamizhiniyan J</h1>
-            <div className="settings-wrapper">
+            <div className="settings-wrapper-pro">
               <Settings
-                className="settings-icon"
+                className="settings-icon-pro"
                 size={24}
                 onClick={() => setSettingsOpen(!settingsOpen)}
               />
               {settingsOpen && (
-                <div className="settings-dropdown">
+                <div className="settings-dropdown-pro">
                   <button className="dropdown-item">Edit Profile</button>
                   <button className="dropdown-item">Change Profile Image</button>
                   <button className="dropdown-item">Edit Name</button>
@@ -217,9 +222,9 @@ const Profile = () => {
 
         <div className="profile-navigation">
           <p className="breadcrumb">Dashboard / Profile</p>
-          <div className="action-buttons">
-            <button className="action-button">Reset Page to Default</button>
-            <button className="action-button">Customize This Page</button>
+          <div className="action-buttons-pro">
+            <button className="action-button-pro">Reset Page to Default</button>
+            <button className="action-button-pro">Customize This Page</button>
           </div>
         </div>
         
@@ -291,7 +296,7 @@ const Profile = () => {
         </div>
       </div>
       
-      <footer className="footer">
+      <footer className="footer-profile">
         <div className="footer-section">
           <h3>Contact Us</h3>
           <div className="footer-item">

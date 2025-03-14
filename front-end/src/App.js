@@ -6,7 +6,12 @@ import DashboardM from './Dashboard-management.js';
 import Stock from './Stock.js'
 import Maintenance from './Maintenance.js'
 import Information  from './Information.js'
-import FilePage from './file_page.js';
+import FilePage_IT from './file_page_IT.js';
+import FilePage_w from './file_page_w.js';
+import FilePage_PE from './file_page_PE.js';
+import FilePage_AC from './file_page_AC.js';
+import FilePage_CS from './file_page_CS.js';
+import FilePage_T from './file_page_T.js';
 import Report from './Report.js'
 import News from './News.js'
 import WaterService from './WaterService.js'
@@ -20,7 +25,6 @@ import Mech from './Departments/Mech.js';
 import Civil from './Departments/Civil.js'
 import Arts from './Departments/Arts.js';
 import Loginpage from './Loginpage.js';
-import Main_admin from './Main-admin.js';
 import EndUser from './EndUser.js'
 import { Provider } from "react-redux";
 import store from './Redux/Store.js'
@@ -40,8 +44,7 @@ function App() {
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Loginpage/>}></Route>
-            <Route path='/main-admin' element={<Main_admin/>}></Route>
+            <Route path='/' element={<Loginpage/>}></Route> 
             <Route path='/dashboard' element={<Dashboard/>}></Route>
             <Route path='/dashboard-admin' element={<DashboardA/>}></Route>
             <Route path='/dashboard-super' element={<DashboardS/>}></Route>
@@ -50,7 +53,12 @@ function App() {
             <Route path='/stock' element={<Stock/>}></Route>
             <Route path='/maintenance' element={<Maintenance/>}></Route>
             <Route path='/information' element={<Information/>}></Route>
-            <Route path='/filepage' element={<FilePage/>}></Route>
+            <Route path='/filepage-it' element={<FilePage_IT/>}></Route>
+            <Route path='/filepage-w' element={<FilePage_w/>}></Route>
+            <Route path='/filepage-pe' element={<FilePage_PE/>}></Route>
+            <Route path='/filepage-ac' element={<FilePage_AC/>}></Route>
+            <Route path='/filepage-cs' element={<FilePage_CS/>}></Route>
+            <Route path='/filepage-t' element={<FilePage_T/>}></Route>
             <Route path='/report' element={<Report/>}></Route>
             <Route path='/news' element={<News/>}></Route>
             <Route path='/waterService' element={<WaterService/>}></Route>

@@ -13,7 +13,10 @@ const notifications = [
   { id: 3, text: "New request received", time: "1 hour ago" }
 ];
 
-const FilePage = () => {
+
+
+
+const FilePage_PE = () => {
   const { folderName } = useParams(); // Read the folderName from URL parameters
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -36,6 +39,61 @@ const FilePage = () => {
     setFiles(exampleFiles);
   }, [folderName]);
 
+  const handleStock =()=>{
+    navigate('/stock')
+  }
+  const handleReport=()=>{
+    navigate('/report')
+  }
+  
+  const handleMain=()=>{
+    navigate('/maintenance')
+  }
+  
+  const handleHome=()=>{
+    navigate('/dashboard-admin')
+  }
+  
+  const handleProfile=()=>{
+    navigate('/profile')
+  }
+  
+  const handleInfo=()=>{
+    navigate('/information')
+  }
+  
+  const ticket=()=>{
+    navigate('/ticket')
+  }
+  
+  const news=()=>{
+    navigate('/news')
+  }
+  
+  const logout=()=>{
+    navigate('/')
+  }
+  
+  const toggleEditDeleteButtons = () => {
+    setShowEditDeleteButtons(!showEditDeleteButtons);
+  };
+  
+  const toggleNotifications = () => {
+    setNotificationsOpen(!notificationsOpen);
+  };
+  
+  const noti=()=>{
+    navigate('/notification')
+  }
+  
+  const calender=()=>{
+    navigate('/calender')
+  }
+  
+  const noti_setting=()=>{
+    navigate('/noti_setting')
+  }
+
   return (
     <div className="app-container">
       {/* Navbar */}
@@ -47,43 +105,87 @@ const FilePage = () => {
           </div>
         </div>
 
-        <nav className="nav">
-          {["Dashboard", "Stock", "Service", "Report"].map((link, index) => (
+        {/*<nav className="nav">
+          {["Dashboard","Service","Report","News"].map((link, index) => (
             <a key={index} href="#" className="nav-link">
               {link}
             </a>
           ))}
+        </nav>*/}
+
+        <nav className="nav">
+          <ul type="none" className='nav'>
+            <button className='nav-link' onClick={handleHome}>Home</button>
+            <button className='nav-link' onClick={handleStock}>Stock</button>
+            {selector.userDetails.dept!=='CSE' && selector.userDetails.dept!=='ECE' && <button className='nav-link' onClick={handleMain}>Maintenance</button>}
+            <button className='nav-link' onClick={handleReport}>Report</button>
+            {/*<button className='nav-link' onClick={handleInfo}>Notification</button>*/}
+          </ul>
         </nav>
+        <div className='space'></div>
 
-        <div className="right-section">
+        {/*<div className="right-section">
           <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
-        </div>
+        </div>*/}
 
+        {/* Popup Menus */}
         {menuOpen && (
           <div className="menu-popup">
-            <button className="popup-item">📊 Dashboard</button>
-            <button className="popup-item">📅 Calendar</button>
-            <button className="popup-item">📝 Create</button>
-            <button className="popup-item">✏️ Update</button>
-            <button className="popup-item">📖 Read</button>
-            <button className="popup-item">🗑️ Delete</button>
-            <button className="popup-item">📜 Report</button>
-            <button className="popup-item">📰 News</button>
-          </div>
-        )}
+          <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
+          <button className="popup-item" onClick={ticket}>🎟 Ticket</button>
+          <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
+          <button className="popup-item" onClick={news}>📰 News</button>
+          <button className="popup-item" onClick={handleReport}>📜 Report</button>
+          <button className="popup-item" onClick={calender}>📅 Calendar</button>
+      
+        </div>
 
+        )}
+        <div className="right-section">
+              
+              <div className="notification-wrapper">
+                <Bell className="notification-icon" size={28} onClick={toggleNotifications} />
+                {/* Notification Popup */}
+                {notificationsOpen && (
+                  <div className="notification-popup">
+                    <div className="notification-header">
+                      <h3>Notifications</h3>
+                      <div className="notification-actions">
+                        {/*<AiOutlineCheck className="tick-icon" />*/}
+                        <AiOutlineSetting className="settings-icon" onClick={noti_setting}/>
+                      </div>
+                    </div>
+                    <div className="notification-list">
+                      {notifications.map((notification) => (
+                        <div key={notification.id} className="notification-item">
+                          <p>{notification.text}</p>
+                          <span className="notification-time">{notification.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button className="see-all-button" onClick={noti}>See all</button>
+                  </div>
+                )}
+              </div>
+              
+            </div>
+            <div>
+            <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)}/>
+            </div>
+            
         {profileOpen && (
           <div className="profile-popup">
-            <button className="popup-item">📊 Dashboard</button>
-            <button className="popup-item">👤 Profile</button>
-            <button className="popup-item">🚪 Logout</button>
+            <button className="popup-item" onClick={handleHome}>📊 Dashboard</button>
+            <button className="popup-item" onClick={handleProfile}>👤 Profile</button>
+            <button className="popup-item" onClick={news}>📰 News</button>
+            <button className="popup-item" onClick={logout}>🚪 Logout</button>
           </div>
         )}
       </header>
 
       {/* Main Content */}
       <div className="dashboard-container">
-        <h1 className="dashboard-title">INFORMATION TECHNOLOGY</h1><br></br>
+        <h1 className="dashboard-title">POWER ELECTRICAL</h1><br></br>
         <h2 className="folder-title">{folderName}</h2> {/* Display the folder name */}
 
         <div className="quick-actions">
@@ -133,4 +235,4 @@ const FilePage = () => {
   );
 };
 
-export default FilePage;
+export default FilePage_PE;

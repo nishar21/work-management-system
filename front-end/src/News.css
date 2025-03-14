@@ -203,11 +203,34 @@
 
 .news-actions {
     display: flex;
+    bottom: 125px;
+    right: 10px;
+    left: 780px;
+    position: relative;
     gap: 10px;
 }
+.edit-icon, .delete-icon {
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.3s;
+    gap: 1rem;
+  }
+  
+  .edit-icon:hover {
+    color: #0056b3;
+  }
+  
+  .delete-icon {
+    color: red;
+  }
+  
+  .delete-icon:hover {
+    color: darkred;
+  }
+  
 
-.filter-button,
-.add-button {
+
+.add-button-news {
     background: #007bff;
     color: white;
     border: none;
@@ -217,12 +240,8 @@
     font-size: 14px;
 }
 
-.add-button {
-    background: #007bff;
-}
-
 /* Modal Styles */
-.modal-overlay {
+.modal-overlay-news {
     position: fixed;
     top: 0;
     left: 0;
@@ -235,27 +254,33 @@
     z-index: 1000;
 }
 
-.modal {
+.modal-news {
+    display: flex;
+    flex-direction: column;
     background: white;
-    padding: 20px;
+    padding: 50px;
     width: 400px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
+    
+    
 }
 
-.modal-header {
+.modal-header-news {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 45px;
 }
 
 .close-icon {
     cursor: pointer;
     color: #333;
     transition: color 0.3s;
+    
+    
 }
 
 .close-icon:hover {
@@ -283,8 +308,46 @@
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    margin-top:10px;
 }
 
 .submit-button:hover {
     background: #0056b3;
+}
+/* Delete Confirmation Modal */
+.delete-modal {
+    background: white;
+    padding: 70px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.delete-confirm {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.delete-cancel {
+    background: gray;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
 }

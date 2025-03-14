@@ -78,7 +78,7 @@ import { useSelector } from "react-redux";
     };
 
     const folder=()=>{
-      navigate('/filepage')
+      navigate('/filepage-it')
     }
 
     const handleStock =()=>{

@@ -78,7 +78,7 @@ const CleaningService = () => {
   };
 
   const folder=()=>{
-    navigate('/filepage')
+    navigate('/filepage-cs')
   }
 
   const handleStock =()=>{

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import "./Stock.css";
-import Logo from './Bama.png';
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting } from "react-icons/ai";
-import { Folder, Upload, Share, Download, Trash, Menu, User,Bell } from "lucide-react";
 import companyLogo from "./Bama.png";
 import computingImage from "./schoolofcomputing.jpg";
 import mechImage from "./mechanical.jpg";
@@ -13,7 +9,11 @@ import lawImage from "./law.jpeg";
 import eceImage from "./ece.jpg";
 import eeeImage from "./eee.jpg";
 import { useNavigate } from "react-router-dom";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineMenu, AiOutlineClose, AiOutlinePlus, AiOutlineEdit, AiOutlineCheck, AiOutlineSetting, AiOutlineMinus } from "react-icons/ai";
+import { Folder, Upload, Share, Download, Trash, Menu, User,Bell,Settings } from "lucide-react";
 import { useSelector } from "react-redux";
+import Logo from './Bama.png';
 
 const initialSchools = [
   { name: "SCHOOL OF COMPUTING", image: computingImage },
@@ -22,7 +22,7 @@ const initialSchools = [
   { name: "SCHOOL OF ARTS", image: artsImage },
   { name: "SCHOOL OF LAW", image: lawImage },
   { name: "SCHOOL OF ECE", image: eceImage },
-  { name: "SCHOOL OF EEE", image: eeeImage }
+  { name: "SCHOOL OF EEE", image: eeeImage },
 ];
 
 const notifications = [
@@ -41,15 +41,14 @@ const Stock = () => {
   const [newDeptName, setNewDeptName] = useState("");
   const [newDeptImage, setNewDeptImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [editMode, setEditMode] = useState(false); // Edit mode state
+  const [editingSchool, setEditingSchool] = useState(null); // School being edited
+  const [deleteMode, setDeleteMode] = useState(false); // Delete mode state
+  const [schoolToDelete, setSchoolToDelete] = useState(null); // School to delete
+  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false); // State for showing edit/delete buttons
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
   const selector = useSelector(state=>state)
   let navigate = useNavigate()
-  const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false); // State for notification popup
-  /*const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);*/
-
   const filteredSchools = schools.filter((school) =>
     school.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -73,7 +72,7 @@ const Stock = () => {
   const confirmAddDepartment = () => {
     const newDepartment = {
       name: newDeptName,
-      image: previewImage
+      image: previewImage,
     };
     setSchools([...schools, newDepartment]);
     setShowAddPopup(false);
@@ -81,6 +80,63 @@ const Stock = () => {
     setNewDeptName("");
     setNewDeptImage(null);
     setPreviewImage(null);
+  };
+
+  const handleEditButtonClick = () => {
+    setEditMode(!editMode); // Toggle edit mode
+    setDeleteMode(false); // Disable delete mode if active
+  };
+
+  const handlePenIconClick = (index) => {
+    setEditingSchool(index); // Set the school being edited
+  };
+
+  const handleSaveEdit = (index, updatedName) => {
+    const updatedSchools = [...schools];
+    updatedSchools[index] = {
+      ...updatedSchools[index],
+      name: updatedName,
+    };
+    setSchools(updatedSchools);
+    setEditingSchool(null); // Exit edit mode
+  };
+
+  const handleDeleteButtonClick = () => {
+    setDeleteMode(!deleteMode); // Toggle delete mode
+    setEditMode(false); // Disable edit mode if active
+  };
+
+  const handleMinusIconClick = (index) => {
+    setSchoolToDelete(index); // Set the school to delete
+    setShowConfirmPopup(true);
+  };
+
+  const confirmDeleteSchool = () => {
+    const updatedSchools = schools.filter((_, i) => i !== schoolToDelete);
+    setSchools(updatedSchools);
+    setSchoolToDelete(null); // Reset school to delete
+    setDeleteMode(false); // Disable delete mode
+    setShowConfirmPopup(false);
+  };
+
+  const cancelAction = () => {
+    setShowConfirmPopup(false);
+    setSchoolToDelete(null);
+  };
+
+  // Function to toggle the visibility of the edit/delete buttons
+  const toggleEditDeleteButtons = () => {
+    setShowEditDeleteButtons(!showEditDeleteButtons);
+  };
+
+  // Function to handle the "Add New" button click
+  const handleAddButtonClick = () => {
+    setShowAddPopup(true);
+    setShowEditDeleteButtons(false); // Close the vertical buttons after clicking
+  };
+
+  const toggleNotifications = () => {
+    setNotificationsOpen(!notificationsOpen);
   };
 
   const handleCard=(name)=>{
@@ -143,14 +199,6 @@ const Stock = () => {
     navigate('/')
   }
 
-  const toggleEditDeleteButtons = () => {
-    setShowEditDeleteButtons(!showEditDeleteButtons);
-  };
-
-  const toggleNotifications = () => {
-    setNotificationsOpen(!notificationsOpen);
-  };
-
   const noti=()=>{
     navigate('/notification')
   }
@@ -163,10 +211,9 @@ const Stock = () => {
     navigate('/noti_setting')
   }
 
-  
-
   return (
-    <div className="app-container">
+    <div className="app-container-stock">
+      {/* Navbar */}
       <header className="header">
         <div className="left-section">
           <Menu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
@@ -252,47 +299,26 @@ const Stock = () => {
           </div>
         )}
       </header>
-      {/* Navbar */}
-      {/*<header className="header">
-        <div className="left-section">
-          <AiOutlineMenu className="menu-icon" size={28} onClick={() => setMenuOpen(!menuOpen)} />
-          <div className="logo-wrapper">
-            <img src={companyLogo} alt="logo" className="logo-image" />
-          </div>
-        </div>
-    
-        {/*<nav className="nav">
-          {["Dashboard", "Stock", "Service", "Report"].map((link, index) => (
-            <a key={index} href="#" className="nav-link">{link}</a>
-          ))}
-        </nav>
 
-        <div className="right-section">
-          <User className="profile-icon" size={28} onClick={() => setProfileOpen(!profileOpen)} />
-        </div>
-        {/* Popup Menus 
-        {menuOpen && (
-          <div className="menu-popup">
-            <button className="popup-item">📊 Dashboard</button>
-            <button className="popup-item">📅 Calendar</button>
-            <button className="popup-item">📝 Create</button>
-            <button className="popup-item">✏️ Update</button>
-            <button className="popup-item">📖 Read</button>
-            <button className="popup-item">🗑️ Delete</button>
-            <button className="popup-item">📜 Report</button>
-            <button className="popup-item">📰 News</button>
-
+      {/* Action Buttons Container */}
+      {selector.userDetails.position=="Super Admin" && <div className="action-buttons-container-stock">
+        <button className="pen-icon-stock" onClick={toggleEditDeleteButtons}>
+          <AiOutlineEdit size={24} />
+        </button>
+        {showEditDeleteButtons && (
+          <div className="action-buttons-stock">
+            <button className="add-button-stock" onClick={handleAddButtonClick}>
+              Add New
+            </button>
+            <button className="edit-button-stock" onClick={handleEditButtonClick}>
+              {editMode ? "Cancel Edit" : "Edit"}
+            </button>
+            <button className="delete-button-stock" onClick={handleDeleteButtonClick}>
+              {deleteMode ? "Cancel Delete" : "Delete"}
+            </button>
           </div>
         )}
-
-        {profileOpen && (
-          <div className="profile-popup">
-            <button className="popup-item">📊 Dashboard</button>
-            <button className="popup-item">👤 Profile</button>
-            <button className="popup-item">🚪 Logout</button>
-          </div>
-        )}
-      </header>*/}
+      </div>}
 
       {/* Search & Add Button */}
       <div className="search-bar-container">
@@ -303,19 +329,50 @@ const Stock = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {selector.userDetails.position=='Super Admin' && <button className="add-button" onClick={() => setShowAddPopup(true)}>ADD+</button>}
+        
       </div>
 
       {/* Departments Grid */}
       <div className="grid">
         {filteredSchools.length > 0 ? (
           filteredSchools.map((school, index) => (
-            <div className="card" key={index} onClick={() => handleCard(school.name)}>
-              <div
-                className="card-image"
-                style={{ backgroundImage: `url(${school.image})` }}
-              ></div>
-              <div className="card-footer">{school.name}</div>
+            <div className="card-stock" key={index} onClick={()=>{handleCard(school.name)}}>
+              {/* Pen Icon for Editing */}
+              {editMode && (
+                <button className="pen-icon-button-stock" onClick={() => handlePenIconClick(index)}>
+                  <AiOutlineEdit size={20} />
+                </button>
+              )}
+              {/* Minus Icon for Deleting */}
+              {deleteMode && (
+                <button className="minus-icon-button-stock" onClick={() => handleMinusIconClick(index)}>
+                  <AiOutlineMinus size={20} />
+                </button>
+              )}
+              {/* Edit Form */}
+              {editingSchool === index ? (
+                <div className="edit-form">
+                  <input
+                    type="text"
+                    value={school.name}
+                    onChange={(e) => {
+                      const updatedSchools = [...schools];
+                      updatedSchools[index].name = e.target.value;
+                      setSchools(updatedSchools);
+                    }}
+                  />
+                  <button onClick={() => handleSaveEdit(index, school.name)}>Save</button>
+                  <button onClick={() => setEditingSchool(null)}>Cancel</button>
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="card-image"
+                    style={{ backgroundImage: `url(${school.image}) `}}
+                  ></div>
+                  <div className="card-footer">{school.name}</div>
+                </>
+              )}
             </div>
           ))
         ) : (
@@ -325,7 +382,7 @@ const Stock = () => {
 
       {/* Add Department Popup */}
       {showAddPopup && (
-        <div className="popup-overlay">
+        <div className="popup-overlay-stock">
           <div className="popup-box">
             <h2>Add New Department</h2>
             <input
@@ -337,8 +394,12 @@ const Stock = () => {
             />
             <input type="file" className="popup-input" onChange={handleImageChange} />
             {previewImage && <img src={previewImage} alt="Preview" className="preview-image" />}
-            <button className="popup-btn" onClick={handleAddDepartment}>Upload</button>
-            <button className="popup-btn cancel" onClick={() => setShowAddPopup(false)}>Cancel</button>
+            <button className="popup-btn" onClick={handleAddDepartment}>
+              Upload
+            </button>
+            <button className="popup-btn cancel" onClick={() => setShowAddPopup(false)}>
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -347,10 +408,25 @@ const Stock = () => {
       {showConfirmPopup && (
         <div className="popup-overlay">
           <div className="popup-box">
-            <h3>Do you want to create a new department?</h3>
-            <p>Department Name: <b>{newDeptName}</b></p>
-            <button className="popup-btn confirm" onClick={confirmAddDepartment}>Yes</button>
-            <button className="popup-btn cancel" onClick={() => setShowConfirmPopup(false)}>No</button>
+            <h3>
+              {schoolToDelete !== null
+                ? "Are you sure you want to delete this department?"
+                : "Do you want to create a new department?"}
+            </h3>
+            {schoolToDelete !== null ? (
+              <p>Department Name: <b>{schools[schoolToDelete].name}</b></p>
+            ) : (
+              <p>Department Name: <b>{newDeptName}</b></p>
+            )}
+            <button
+              className="popup-btn confirm"
+              onClick={schoolToDelete !== null ? confirmDeleteSchool : confirmAddDepartment}
+            >
+              Yes
+            </button>
+            <button className="popup-btn cancel" onClick={cancelAction}>
+              No
+            </button>
           </div>
         </div>
       )}

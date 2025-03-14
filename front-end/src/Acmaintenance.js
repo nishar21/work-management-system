@@ -78,7 +78,7 @@ const ACmaintenance = () => {
   };
 
   const folder=()=>{
-    navigate('/filepage')
+    navigate('/filepage-ac')
   }
 
   const handleStock =()=>{

@@ -78,7 +78,7 @@ const WaterService = () => {
   };
 
   const folder=()=>{
-    navigate('/filepage')
+    navigate('/filepage-w')
   }
 
       const handleStock =()=>{
